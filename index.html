@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ma cuisine sans FODMAP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3F6F1; --surface:#FFFFFF; --ink:#1C2B24; --muted:#56675E; --line:#D7E1D9;
+  --brand:#23614A; --brand-ink:#FFFFFF; --chip:#E4EDE6;
+  --ok:#2E8B57; --lim:#C98F0E; --non:#C2453B; --sym:#B4442F; --sym-bg:#FBE9E5; --med:#3D5BA9; --med-bg:#E7ECF8;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#111915; --surface:#19231E; --ink:#E7EFE9; --muted:#9FB2A7; --line:#2B3A32;
+    --brand:#74C79E; --brand-ink:#0E1912; --chip:#223029;
+    --ok:#5FC68D; --lim:#E7B84B; --non:#E46F64; --sym:#F08C78; --sym-bg:#3A221D; --med:#9DB4F2; --med-bg:#1F2740; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111915; --surface:#19231E; --ink:#E7EFE9; --muted:#9FB2A7; --line:#2B3A32;
+  --brand:#74C79E; --brand-ink:#0E1912; --chip:#223029;
+  --ok:#5FC68D; --lim:#E7B84B; --non:#E46F64; --sym:#F08C78; --sym-bg:#3A221D; --med:#9DB4F2; --med-bg:#1F2740; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 130px)}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:400 1.0625rem/1.55 "Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+h1,h2,h3{font-family:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif;line-height:1.15;margin:0}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px;border-radius:6px}
+
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.top{max-width:760px;margin:0 auto;padding:14px 18px 0}
+h1{font-size:1.65rem;font-weight:800;letter-spacing:-.01em}
+.lights{display:flex;gap:6px;margin-top:6px;align-items:center;color:var(--muted);font-size:.9rem;flex-wrap:wrap}
+.lights span{display:inline-flex;align-items:center;gap:5px;margin-right:10px}
+nav{display:flex;gap:2px;margin-top:8px;overflow-x:auto;scrollbar-width:none}
+nav button[data-tab="donnees"]{position:sticky;right:0;margin-left:auto;background:var(--surface);border-left:1px solid var(--line);padding-left:14px}
+nav button{background:none;border:0;padding:10px 11px 12px;cursor:pointer;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap}
+nav button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--brand)}
+.badge{display:inline-block;min-width:1.4em;padding:0 .4em;margin-left:4px;border-radius:999px;background:var(--brand);color:var(--brand-ink);font-size:.8rem;text-align:center}
+
+main{max-width:760px;margin:0 auto;padding:18px 18px 60px}
+.panel[hidden]{display:none}
+.intro{color:var(--muted);margin:0 0 14px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+input[type=search],input[type=text],input[type=date],input[type=time],textarea,select{padding:10px 13px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink)}
+input[type=search]{flex:1 1 220px;min-width:0}
+textarea{width:100%;min-height:60px;resize:vertical}
+.stepper{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px 6px 4px 12px}
+.stepper button{width:36px;height:36px;border-radius:9px;border:0;background:var(--chip);font-size:1.2rem;font-weight:700;cursor:pointer}
+.stepper output{min-width:1.5em;text-align:center;font-weight:700}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;cursor:pointer;font-size:.95rem}
+.chip[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+
+.dot{width:12px;height:12px;border-radius:50%;flex:none;display:inline-block}
+.dot.ok{background:var(--ok)} .dot.lim{background:var(--lim)} .dot.non{background:var(--non)}
+
+details.rec{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-bottom:10px}
+details.rec>summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;gap:12px;align-items:flex-start}
+details.rec>summary::-webkit-details-marker{display:none}
+.rt{flex:1}
+.rt h3{font-size:1.12rem;font-weight:700}
+.meta{color:var(--muted);font-size:.9rem;margin-top:2px}
+.plus{font-family:"Bricolage Grotesque",sans-serif;font-size:1.4rem;line-height:1;color:var(--brand);transition:transform .2s}
+details[open] .plus{transform:rotate(45deg)}
+.in-list{font-size:.8rem;font-weight:700;color:var(--brand);margin-top:4px}
+.body{padding:0 16px 16px;border-top:1px solid var(--line)}
+.body h4{font-family:"Bricolage Grotesque",sans-serif;font-size:1rem;margin:14px 0 6px}
+.body ul{margin:0;padding-left:1.1em}
+.body ol{margin:0;padding-left:1.3em}
+.body li{margin:3px 0}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.btn{border:1px solid var(--brand);background:var(--surface);color:var(--brand);border-radius:10px;padding:9px 14px;font-weight:700;cursor:pointer}
+.btn.main{background:var(--brand);color:var(--brand-ink)}
+.empty{color:var(--muted);padding:14px 0}
+
+.cat{margin:22px 0 8px;font-size:1.2rem;font-weight:700}
+ul.foods{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+ul.foods li{display:flex;gap:12px;align-items:center;padding:10px 14px;border-top:1px solid var(--line)}
+ul.foods li:first-child{border-top:0}
+.fname{flex:1;min-width:0}
+.fport{color:var(--muted);font-size:.93rem;text-align:right;max-width:48%}
+.fport.non{color:var(--non)}
+.note{background:var(--chip);border-radius:12px;padding:12px 14px;font-size:.95rem;margin-bottom:14px}
+
+.sel{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.selrow{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 8px 8px 14px}
+.selrow span{flex:1}
+.x{border:0;background:var(--chip);border-radius:8px;padding:6px 10px;cursor:pointer}
+ul.shop{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+ul.shop li{border-top:1px solid var(--line)}
+ul.shop li:first-child{border-top:0}
+ul.shop label{display:flex;gap:12px;align-items:center;padding:11px 14px;cursor:pointer}
+ul.shop input{width:20px;height:20px;accent-color:var(--brand)}
+ul.shop input:checked+span{text-decoration:line-through;color:var(--muted)}
+.foot{color:var(--muted);font-size:.85rem;margin-top:30px}
+.statut{color:var(--muted);font-size:.85rem;margin:0 0 12px}
+
+/* Journal */
+.daybar{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.daybar button.nav{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-size:1.2rem;cursor:pointer}
+.daybar input{flex:1;min-width:0}
+.daylabel{font-family:"Bricolage Grotesque",sans-serif;font-size:1.35rem;font-weight:700;margin:6px 0 12px}
+.daylabel::first-letter{text-transform:uppercase}
+.quick{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:16px}
+.quick button{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:11px 12px;font-weight:700;cursor:pointer;text-align:left}
+.timeline{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.hour{display:grid;grid-template-columns:52px 1fr 40px;gap:8px;align-items:start;padding:8px 8px 8px 12px;border-top:1px solid var(--line);min-height:48px}
+.hour:first-child{border-top:0}
+.hl{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;color:var(--muted);padding-top:6px}
+.hour.has .hl{color:var(--ink)}
+.hents{display:flex;flex-direction:column;gap:6px;min-width:0}
+.hadd{width:34px;height:34px;border-radius:10px;border:1px dashed var(--line);background:none;color:var(--brand);font-size:1.2rem;font-weight:700;cursor:pointer}
+.ent{display:flex;gap:8px;align-items:flex-start;border-radius:10px;padding:7px 6px 7px 10px;background:var(--chip)}
+.ent.t-symptome,.ent.t-selles.bad{background:var(--sym-bg)}
+.ent.t-traitement{background:var(--med-bg)}
+.ent .et{flex:1;min-width:0;font-size:.95rem}
+.ent .et b{margin-right:6px}
+.ent .en{display:block;color:var(--muted);font-size:.85rem}
+.edel{border:0;background:none;color:var(--muted);font-size:1.15rem;line-height:1;cursor:pointer;padding:2px 6px;border-radius:6px}
+.nightbtn{margin:10px 0 0;background:none;border:0;color:var(--brand);font-weight:700;cursor:pointer;padding:6px 0}
+
+/* Dialogue */
+dialog{border:0;border-radius:18px;padding:0;width:min(580px,94vw);max-height:90vh;background:var(--surface);color:var(--ink)}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+.dwrap{display:flex;flex-direction:column;max-height:90vh}
+.dbody{padding:18px;overflow:auto}
+.dbody h2{font-size:1.35rem;margin-bottom:12px}
+.dbody h3{font-size:1rem;margin:16px 0 8px}
+.dfoot{display:flex;gap:8px;justify-content:flex-end;padding:12px 18px;border-top:1px solid var(--line)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opt{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 12px;cursor:pointer}
+.opt[aria-pressed="true"]{border-color:var(--brand);box-shadow:inset 0 0 0 2px var(--brand)}
+.opt .grow{flex:1;min-width:0}
+.opt small{display:block;color:var(--muted)}
+.optrow{display:flex;gap:6px;align-items:stretch}
+.optrow .opt{flex:1}
+.scroll{max-height:220px;overflow:auto;padding-right:2px}
+.err{color:var(--non);font-weight:700;margin:10px 0 0}
+.check{display:flex;gap:8px;align-items:center;cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--brand)}
+
+.tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.tags span{font-size:.78rem;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--chip);color:var(--muted)}
+.tags span.me{background:var(--brand);color:var(--brand-ink)}
+.warn{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
+.warn li{display:flex;gap:8px;align-items:center;font-size:.92rem}
+.okmsg{color:var(--ok);font-weight:700;font-size:.92rem;margin:8px 0 0}
+.field{display:flex;flex-direction:column;gap:5px;margin:12px 0 0}
+.field label{font-weight:700}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wk{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px}
+.wk b{display:block;margin-bottom:3px}
+.wk span{color:var(--muted);font-size:.93rem}
+.planrow{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px}
+.planrow .top2{display:flex;gap:10px;align-items:flex-start}
+.planrow .top2 .grow{flex:1;min-width:0;font-weight:700}
+.planrow .acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.mini{display:flex;align-items:center;gap:6px}
+.mini button{width:32px;height:32px;border-radius:8px;border:0;background:var(--chip);font-weight:700;cursor:pointer}
+.counter{font-family:"Bricolage Grotesque",sans-serif;font-size:1.1rem;font-weight:700}
+table.cmp{border-collapse:collapse;width:100%;min-width:560px;background:var(--surface);border:1px solid var(--line);font-size:.93rem}
+table.cmp th,table.cmp td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}
+table.cmp th:first-child,table.cmp td:first-child{text-align:left}
+table.cmp th{font-weight:700;color:var(--muted)}
+table.cmp small{color:var(--muted)}
+/* Analyse */
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.stat b{font-family:"Bricolage Grotesque",sans-serif;font-size:1.4rem;display:block}
+.stat span{color:var(--muted);font-size:.88rem}
+.res{list-style:none;margin:0 0 6px;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.res li{padding:10px 14px;border-top:1px solid var(--line)}
+.res li:first-child{border-top:0}
+.rhead{display:flex;gap:10px;align-items:center}
+.rhead .grow{flex:1;min-width:0;font-weight:700}
+.rhead .pct{font-weight:700}
+.meter{height:8px;border-radius:99px;background:var(--chip);margin-top:6px;position:relative;overflow:hidden}
+.meter i{position:absolute;inset:0 auto 0 0;border-radius:99px;background:var(--sym)}
+.meter.good i{background:var(--ok)}
+.rsub{color:var(--muted);font-size:.88rem;margin-top:3px}
+details.more summary{cursor:pointer;color:var(--brand);font-weight:700;margin:8px 0}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;
+  background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:700;transition:.25s;pointer-events:none;z-index:20}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){.toast,.plus{transition:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <h1>Ma cuisine sans FODMAP</h1>
+    <div class="lights" aria-hidden="true">
+      <span><i class="dot ok"></i>Conseillé</span>
+      <span><i class="dot lim"></i>Portion limitée</span>
+      <span><i class="dot non"></i>À éviter</span>
+    </div>
+    <nav role="tablist">
+      <button role="tab" aria-selected="true" data-tab="journal">Journal</button>
+      <button role="tab" aria-selected="false" data-tab="analyse">Analyse</button>
+      <button role="tab" aria-selected="false" data-tab="reintro">Réintroduction</button>
+      <button role="tab" aria-selected="false" data-tab="semaine">Ma semaine <span class="badge" id="nb">0/7</span></button>
+      <button role="tab" aria-selected="false" data-tab="plats">Plats</button>
+      <button role="tab" aria-selected="false" data-tab="aliments">Aliments et portions</button>
+      <button role="tab" aria-selected="false" data-tab="donnees">Mes données</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="panel" id="p-journal">
+    <p class="statut" id="statut">Journal enregistré sur cet appareil</p>
+    <div id="jbanner"></div>
+    <div class="daybar">
+      <button class="nav" id="jprev" aria-label="Jour précédent">‹</button>
+      <input type="date" id="jdate" aria-label="Choisir le jour">
+      <button class="nav" id="jnext" aria-label="Jour suivant">›</button>
+      <button class="btn" id="jtoday">Aujourd’hui</button>
+    </div>
+    <h2 class="daylabel" id="jlabel"></h2>
+    <div class="chips" id="jtype"></div>
+    <div class="quick" id="quick"></div>
+    <div class="timeline" id="timeline"></div>
+    <button class="nightbtn" id="nuit"></button>
+  </section>
+
+  <section class="panel" id="p-reintro" hidden>
+    <div id="reintro"></div>
+  </section>
+
+  <section class="panel" id="p-analyse" hidden>
+    <div id="analyse"></div>
+  </section>
+
+  <section class="panel" id="p-semaine" hidden>
+    <div id="semaine"></div>
+  </section>
+
+  <section class="panel" id="p-plats" hidden>
+    <p class="intro" id="platsIntro"></p>
+    <div class="bar">
+      <input type="search" id="q" placeholder="Chercher un plat ou un ingrédient" aria-label="Chercher un plat">
+      <div class="stepper" aria-label="Portions affichées">
+        <span>Portions</span>
+        <button id="moins" aria-label="Une portion de moins">−</button>
+        <output id="pers">2</output>
+        <button id="plus" aria-label="Une portion de plus">+</button>
+      </div>
+    </div>
+    <div class="chips" id="cats"></div>
+    <div class="actions" style="margin:0 0 16px"><button class="btn main" id="btnImport">Importer une recette</button><label class="btn">Importer un fichier<input type="file" class="pfile" accept=".json,.txt,application/json,text/plain" hidden></label></div>
+    <div id="liste"></div>
+  </section>
+
+  <section class="panel" id="p-donnees" hidden>
+    <div id="donnees"></div>
+  </section>
+
+  <section class="panel" id="p-aliments" hidden>
+    <div class="note">Portions <strong>par repas</strong>, arrondies d’après les repères de l’université Monash. Évitez de cumuler plusieurs aliments « portion limitée » dans le même repas : les petites quantités s’additionnent.</div>
+    <div class="bar"><input type="search" id="fq" placeholder="Chercher un aliment (ex. banane, comté)" aria-label="Chercher un aliment"></div>
+    <div class="chips" id="ff"></div>
+    <div id="foods"></div>
+  </section>
+
+  <p class="foot">Guide et analyse indicatifs. À adapter avec un(e) diététicien(ne) ou votre médecin, surtout pour la réintroduction.</p>
+</main>
+
+<dialog id="dlg" aria-labelledby="dtitle">
+  <div class="dwrap">
+    <div class="dbody" id="dbody"></div>
+    <div class="dfoot">
+      <button class="btn" id="dcancel">Annuler</button>
+      <button class="btn main" id="dsave">Ajouter au journal</button>
+    </div>
+  </div>
+</dialog>
+<dialog id="idlg" aria-labelledby="ititle">
+  <div class="dwrap">
+    <div class="dbody" id="ibody"></div>
+    <div class="dfoot">
+      <button class="btn" id="icancel">Annuler</button>
+      <button class="btn main" id="isave">Enregistrer la recette</button>
+    </div>
+  </div>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const TOFU_PREP = "Pressez le tofu dans un torchon 5 min, coupez-le en cubes et roulez-les dans la Maïzena avec une pincée de sel.";
+const TOFU_DORE = "Dorez le tofu dans l’huile d’olive bien chaude 6 à 8 min, en le retournant, jusqu’à ce qu’il soit croustillant.";
+const PLATS = [
+ {id:"tofu-italien",nom:"Tofu croustillant, aubergine et poivron à l’italienne",themes:["Tofu","Italien"],min:25,
+  ing:[[150,"g","tofu ferme"],[1,"c. à s.","fécule de maïs (Maïzena)"],[1.5,"c. à s.","huile d’olive"],[75,"g","aubergine"],[75,"g","poivron vert"],[5,"","tomate(s) cerise(s)"],[1,"pincée(s)","origan"],[1,"c. à s.","basilic ciselé"],[80,"g","pâtes sans gluten (crues)"]],
+  et:[TOFU_PREP,"Faites cuire les pâtes.",TOFU_DORE+" Réservez.","Dans la même poêle, faites sauter l’aubergine et le poivron en dés 8 min. Ajoutez les tomates coupées et l’origan, 2 min.","Mélangez avec les pâtes et le tofu, parsemez de basilic."]},
+ {id:"tofu-ciboulette",nom:"Tofu croustillant, sauce crémeuse ciboulette et pommes de terre sautées",themes:["Tofu","Crémeux"],min:25,
+  ing:[[150,"g","tofu ferme"],[1,"c. à s.","fécule de maïs (Maïzena)"],[2,"c. à s.","huile d’olive"],[200,"g","pommes de terre"],[80,"ml","crème de riz"],[2,"c. à s.","ciboulette ciselée"],[0.5,"c. à c.","moutarde"],[1,"c. à c.","jus de citron"]],
+  et:["Coupez les pommes de terre en petits dés et faites-les sauter 15 min à couvert dans 1 c. à s. d’huile.",TOFU_PREP,TOFU_DORE,"Chauffez doucement la crème de riz avec la moutarde, le citron et la ciboulette. Salez, poivrez.","Servez le tofu et les pommes de terre nappés de sauce."]},
+ {id:"tofu-grec",nom:"Tofu à la grecque, salade concombre, tomate et feta",themes:["Tofu","Grec","Salade"],min:20,
+  ing:[[150,"g","tofu ferme"],[1,"c. à s.","fécule de maïs (Maïzena)"],[1.5,"c. à s.","huile d’olive"],[1,"c. à c.","origan"],[1,"c. à s.","jus de citron"],[75,"g","concombre"],[65,"g","tomate"],[6,"","olive(s) noire(s)"],[30,"g","feta"],[1,"tranche(s)","pain au levain"]],
+  et:[TOFU_PREP+" Ajoutez l’origan.",TOFU_DORE+" Arrosez de la moitié du citron.","Coupez le concombre et la tomate, ajoutez les olives, la feta émiettée, le reste d’huile et de citron.","Servez le tofu sur la salade avec le pain grillé."]},
+ {id:"curry-tofu",nom:"Curry crémeux de tofu, aubergine et coco",themes:["Tofu","Crémeux","Asiatique"],min:25,
+  ing:[[150,"g","tofu ferme"],[1,"c. à s.","fécule de maïs (Maïzena)"],[1,"c. à s.","huile d’olive"],[75,"g","aubergine"],[40,"g","poivron rouge"],[60,"ml","crème de coco"],[1,"c. à c.","curry en poudre sans ail ni oignon"],[0.5,"c. à c.","curcuma"],[1,"c. à c.","gingembre frais râpé"],[70,"g","riz basmati (cru)"],[1,"c. à s.","ciboulette ciselée"]],
+  et:["Faites cuire le riz.",TOFU_PREP,TOFU_DORE+" Réservez.","Faites revenir l’aubergine et le poivron en dés 6 min, ajoutez les épices et le gingembre, 1 min.","Versez la crème de coco et 3 c. à s. d’eau, remettez le tofu, laissez mijoter 3 min. Servez avec le riz et la ciboulette."]},
+ {id:"tofu-soja",nom:"Tofu sauté au poivron, pak choï et gingembre",themes:["Tofu","Asiatique"],min:20,
+  ing:[[150,"g","tofu ferme"],[1,"c. à s.","fécule de maïs (Maïzena)"],[1,"c. à s.","huile d’olive"],[75,"g","poivron vert"],[75,"g","pak choï"],[1,"c. à c.","gingembre frais râpé"],[1.5,"c. à s.","sauce soja"],[70,"g","nouilles de riz (crues)"],[1,"c. à s.","vert de ciboule émincé"],[1,"c. à c.","graines de sésame"]],
+  et:["Préparez les nouilles selon le paquet.",TOFU_PREP,TOFU_DORE,"Ajoutez le poivron en lamelles 3 min, puis le pak choï et le gingembre 2 min.","Ajoutez les nouilles et la sauce soja, mélangez. Parsemez de ciboule et de sésame."]},
+ {id:"bowl-cacahuete",nom:"Bowl tofu croustillant, sauce crémeuse cacahuète-coco",themes:["Tofu","Crémeux","Asiatique"],min:25,
+  ing:[[150,"g","tofu ferme"],[1,"c. à s.","fécule de maïs (Maïzena)"],[1,"c. à s.","huile d’olive"],[70,"g","riz (cru)"],[75,"g","carotte"],[50,"g","concombre"],[1,"c. à s.","beurre de cacahuète"],[30,"ml","crème de coco"],[1,"c. à c.","sauce soja"],[0.5,"","citron(s) vert(s)"],[1,"c. à s.","ciboulette ciselée"]],
+  et:["Faites cuire le riz.",TOFU_PREP,TOFU_DORE,"Mélangez le beurre de cacahuète, la crème de coco, la sauce soja et le jus de citron vert.","Montez le bol : riz, carotte râpée, concombre, tofu, sauce et ciboulette."]},
+ {id:"tacos-tofu",nom:"Tacos de maïs au tofu croustillant, poivron et cheddar",themes:["Tofu","Fromage"],min:20,
+  ing:[[2,"","tortilla(s) de maïs"],[120,"g","tofu ferme"],[1,"c. à s.","fécule de maïs (Maïzena)"],[1,"c. à s.","huile d’olive"],[0.5,"c. à c.","paprika"],[0.5,"c. à c.","cumin"],[50,"g","poivron vert"],[30,"g","laitue"],[30,"g","cheddar râpé"],[0.5,"","citron(s) vert(s)"]],
+  et:[TOFU_PREP+" Ajoutez le paprika et le cumin.",TOFU_DORE+" Ajoutez le poivron en lamelles les 3 dernières minutes.","Réchauffez les tortillas à la poêle.","Garnissez de laitue, de tofu, de poivron et de cheddar. Arrosez de citron vert."]},
+ {id:"pates-aubergine",nom:"Pâtes crémeuses à l’aubergine, ciboulette et parmesan",themes:["Italien","Crémeux","Fromage"],min:20,
+  ing:[[80,"g","pâtes sans gluten (crues)"],[75,"g","aubergine"],[1,"c. à s.","huile infusée à l’ail"],[80,"ml","crème de riz"],[25,"g","parmesan râpé"],[1,"c. à s.","ciboulette ciselée"]],
+  et:["Faites cuire les pâtes.","Dorez l’aubergine en petits dés dans l’huile, 8 à 10 min.","Ajoutez la crème de riz et la moitié du parmesan, laissez épaissir 2 min.","Mélangez avec les pâtes, parsemez du reste de parmesan et de ciboulette."]},
+ {id:"carbonara",nom:"Carbonara aux pâtes sans gluten",themes:["Italien","Crémeux","Fromage","Viande"],min:15,
+  ing:[[80,"g","pâtes sans gluten (crues)"],[50,"g","lardons sans ail ni oignon"],[1,"","œuf(s)"],[25,"g","parmesan râpé"],[1,"pincée(s)","poivre"],[1,"c. à s.","ciboulette ciselée"]],
+  et:["Faites cuire les pâtes.","Dorez les lardons à sec.","Battez l’œuf avec le parmesan et beaucoup de poivre.","Hors du feu, mélangez les pâtes, les lardons et l’œuf avec 2 c. à s. d’eau de cuisson pour une sauce crémeuse. Parsemez de ciboulette."]},
+ {id:"parmigiana",nom:"Parmigiana d’aubergine express à la poêle",themes:["Italien","Fromage"],min:25,
+  ing:[[75,"g","aubergine"],[1,"c. à s.","huile d’olive"],[90,"g","tomates concassées en conserve"],[1,"c. à s.","basilic ciselé"],[40,"g","mozzarella"],[10,"g","parmesan râpé"],[1,"tranche(s)","pain au levain"]],
+  et:["Coupez l’aubergine en tranches fines et dorez-les 3 min de chaque côté dans l’huile.","Versez les tomates et le basilic autour, salez, poivrez, laissez mijoter 5 min.","Posez la mozzarella et le parmesan, couvrez 5 min pour faire fondre.","Servez avec le pain grillé."]},
+ {id:"risotto-poivron",nom:"Risotto crémeux au poivron, parmesan et ciboulette",themes:["Italien","Crémeux","Fromage"],min:25,
+  ing:[[80,"g","riz arborio"],[40,"g","poivron rouge"],[1,"c. à s.","huile infusée à l’ail"],[300,"ml","bouillon sans ail ni oignon"],[40,"ml","crème de riz"],[30,"g","parmesan râpé"],[1,"c. à s.","ciboulette ciselée"]],
+  et:["Faites revenir le poivron en petits dés dans l’huile, 3 min. Ajoutez le riz, remuez 1 min.","Versez le bouillon chaud louche par louche en remuant, pendant 18 min.","Hors du feu, ajoutez la crème de riz et le parmesan. Parsemez de ciboulette."]},
+ {id:"polenta",nom:"Polenta crémeuse au parmesan, aubergine et poivron rôtis",themes:["Italien","Crémeux","Fromage"],min:25,
+  ing:[[60,"g","polenta précuite"],[150,"ml","lait sans lactose"],[100,"ml","eau"],[25,"g","parmesan râpé"],[10,"g","beurre"],[75,"g","aubergine"],[75,"g","poivron vert"],[1,"c. à s.","huile d’olive"],[1,"pincée(s)","thym"]],
+  et:["Préchauffez le four à 220 °C. Rôtissez l’aubergine et le poivron en dés avec l’huile et le thym, 20 min.","Portez le lait et l’eau à frémissement, versez la polenta en pluie et remuez 5 min.","Hors du feu, ajoutez le beurre et le parmesan.","Servez la polenta surmontée des légumes."]},
+ {id:"frittata",nom:"Frittata aubergine, poivron et feta",themes:["Italien","Fromage"],min:20,
+  ing:[[3,"","œuf(s)"],[60,"g","aubergine"],[40,"g","poivron rouge"],[30,"g","feta"],[1,"c. à s.","ciboulette ciselée"],[1,"c. à s.","huile d’olive"],[40,"g","mâche"]],
+  et:["Faites revenir l’aubergine et le poivron en petits dés dans l’huile, 8 min.","Battez les œufs avec la ciboulette, versez sur les légumes, émiettez la feta.","Couvrez et cuisez 6 à 8 min à feu doux. Servez avec la mâche."]},
+ {id:"tartines-mozza",nom:"Tartines au levain, aubergine grillée, mozzarella et basilic",themes:["Italien","Fromage"],min:15,
+  ing:[[2,"tranche(s)","pain au levain"],[75,"g","aubergine"],[1,"c. à s.","huile d’olive"],[40,"g","mozzarella"],[1,"c. à s.","basilic ciselé"],[30,"g","roquette"]],
+  et:["Coupez l’aubergine en tranches fines, badigeonnez d’huile et grillez-les 3 min de chaque côté.","Garnissez le pain d’aubergine et de mozzarella, passez 5 min sous le gril du four.","Parsemez de basilic, servez avec la roquette."]},
+ {id:"cabillaud-italien",nom:"Cabillaud à l’italienne, tomates cerises, olives et câpres",themes:["Poisson","Italien"],min:25,
+  ing:[[140,"g","dos de cabillaud"],[5,"","tomate(s) cerise(s)"],[5,"","olive(s) noire(s)"],[1,"c. à c.","câpres"],[1,"c. à s.","huile d’olive"],[1,"c. à s.","basilic ciselé"],[60,"g","quinoa (cru)"]],
+  et:["Préchauffez le four à 200 °C.","Posez le cabillaud dans un plat avec les tomates, les olives, les câpres et l’huile. Enfournez 15 min.","Faites cuire le quinoa 12 min.","Servez parsemé de basilic."]},
+ {id:"souvlaki",nom:"Souvlaki de poulet, tzatziki sans ail et riz",themes:["Grec","Viande"],min:25,
+  ing:[[130,"g","blanc de poulet"],[1,"c. à s.","huile d’olive"],[1,"c. à s.","jus de citron"],[1,"c. à c.","origan"],[70,"g","riz (cru)"],[80,"g","yaourt sans lactose"],[50,"g","concombre"],[1,"c. à s.","menthe ciselée"],[65,"g","tomate"]],
+  et:["Coupez le poulet en cubes, mélangez avec l’huile, le citron et l’origan.","Faites cuire le riz.","Râpez le concombre, pressez-le, mélangez au yaourt et à la menthe.","Dorez le poulet 8 min à la poêle. Servez avec le riz, la tomate et le tzatziki."]},
+ {id:"salade-grecque",nom:"Salade grecque au quinoa",themes:["Grec","Fromage","Salade"],min:20,
+  ing:[[60,"g","quinoa (cru)"],[75,"g","concombre"],[65,"g","tomate"],[40,"g","poivron vert"],[8,"","olive(s) noire(s)"],[40,"g","feta"],[1,"c. à s.","huile d’olive"],[1,"c. à c.","vinaigre de vin"],[1,"pincée(s)","origan"]],
+  et:["Faites cuire le quinoa 12 min, rincez à l’eau froide.","Coupez le concombre, la tomate et le poivron.","Mélangez avec les olives, la feta en cubes, l’huile, le vinaigre et l’origan."]},
+ {id:"moussaka",nom:"Moussaka express à la poêle",themes:["Grec","Crémeux","Fromage","Viande"],min:35,
+  ing:[[100,"g","bœuf haché"],[75,"g","aubergine"],[1,"c. à s.","huile d’olive"],[90,"g","tomates concassées en conserve"],[1,"pincée(s)","cannelle"],[1,"pincée(s)","origan"],[100,"ml","lait sans lactose"],[1,"c. à s.","fécule de maïs (Maïzena)"],[25,"g","emmental râpé"],[1,"pincée(s)","muscade"]],
+  et:["Dorez l’aubergine en dés dans l’huile 8 min, réservez.","Faites revenir le bœuf, ajoutez les tomates, la cannelle et l’origan, 5 min. Remettez l’aubergine.","Délayez la Maïzena dans le lait froid, chauffez en fouettant jusqu’à épaississement, ajoutez la muscade.","Versez la béchamel sur la viande, parsemez d’emmental et passez 5 min sous le gril du four."]},
+ {id:"crevettes-grecque",nom:"Crevettes à la grecque, tomate et feta",themes:["Grec","Poisson"],min:20,
+  ing:[[120,"g","crevettes décortiquées"],[1,"c. à s.","huile infusée à l’ail"],[90,"g","tomates concassées en conserve"],[1,"pincée(s)","origan"],[30,"g","feta"],[1,"c. à s.","persil ciselé"],[70,"g","riz (cru)"]],
+  et:["Faites cuire le riz.","Faites mijoter les tomates avec l’huile et l’origan 5 min.","Ajoutez les crevettes 3 min, émiettez la feta par-dessus, couvrez 2 min.","Parsemez de persil et servez avec le riz."]},
+ {id:"feta-rotie",nom:"Feta rôtie, tomates cerises et poivron, quinoa",themes:["Grec","Fromage"],min:25,
+  ing:[[40,"g","feta"],[5,"","tomate(s) cerise(s)"],[75,"g","poivron vert"],[1,"c. à s.","huile d’olive"],[1,"pincée(s)","origan"],[60,"g","quinoa (cru)"],[1,"c. à s.","basilic ciselé"]],
+  et:["Préchauffez le four à 200 °C.","Mettez la feta au centre d’un plat, entourez des tomates et du poivron en lamelles, arrosez d’huile et d’origan. Enfournez 20 min.","Faites cuire le quinoa 12 min.","Écrasez la feta avec les légumes et mélangez au quinoa. Parsemez de basilic."]},
+ {id:"halloumi",nom:"Halloumi grillé, aubergine et salade de quinoa à la menthe",themes:["Grec","Fromage","Salade"],min:20,
+  ing:[[40,"g","halloumi"],[75,"g","aubergine"],[1,"c. à s.","huile d’olive"],[60,"g","quinoa (cru)"],[50,"g","concombre"],[1,"c. à s.","menthe ciselée"],[1,"c. à s.","jus de citron"]],
+  et:["Faites cuire le quinoa 12 min, rincez à l’eau froide.","Grillez l’aubergine en tranches dans l’huile 3 min de chaque côté, puis le halloumi 2 min de chaque côté.","Mélangez le quinoa avec le concombre en dés, la menthe et le citron. Servez avec l’aubergine et le halloumi."]},
+ {id:"saumon-ciboulette",nom:"Saumon, sauce crémeuse citron-ciboulette, pommes de terre vapeur",themes:["Poisson","Crémeux"],min:25,
+  ing:[[130,"g","pavé de saumon"],[1,"c. à c.","huile d’olive"],[200,"g","pommes de terre"],[75,"g","haricots verts"],[60,"ml","crème de riz"],[1.5,"c. à s.","ciboulette ciselée"],[1,"c. à s.","jus de citron"]],
+  et:["Faites cuire les pommes de terre et les haricots verts à la vapeur, 15 à 20 min.","Saisissez le saumon dans l’huile, 4 min de chaque côté.","Chauffez la crème de riz avec le citron et la ciboulette.","Servez le saumon nappé de sauce avec les légumes."]},
+ {id:"poulet-paprika",nom:"Poulet crémeux au paprika et poivron",themes:["Viande","Crémeux"],min:20,
+  ing:[[130,"g","blanc de poulet"],[1,"c. à s.","huile d’olive"],[40,"g","poivron rouge"],[1,"c. à c.","paprika"],[80,"ml","crème de riz"],[70,"g","riz (cru)"],[1,"c. à s.","ciboulette ciselée"]],
+  et:["Faites cuire le riz.","Dorez le poulet en lanières et le poivron dans l’huile, 7 min.","Ajoutez le paprika puis la crème de riz, laissez épaissir 2 min.","Servez avec le riz et la ciboulette."]},
+ {id:"croque",nom:"Croque au levain, jambon, comté et ciboulette",themes:["Fromage"],min:15,
+  ing:[[2,"tranche(s)","pain au levain"],[1,"tranche(s)","jambon blanc sans ail ni oignon"],[40,"g","comté râpé"],[5,"g","beurre"],[1,"c. à s.","ciboulette ciselée"],[40,"g","mâche"]],
+  et:["Beurrez l’extérieur des tranches de pain.","Garnissez de jambon, de comté et de ciboulette, refermez.","Faites dorer 3 min de chaque côté à la poêle. Servez avec la mâche."]},
+ {id:"omelette",nom:"Omelette baveuse ciboulette et comté",themes:["Fromage"],min:10,
+  ing:[[3,"","œuf(s)"],[30,"g","comté râpé"],[2,"c. à s.","ciboulette ciselée"],[5,"g","beurre"],[1,"tranche(s)","pain au levain"],[65,"g","tomate"]],
+  et:["Battez les œufs avec la ciboulette, salez, poivrez.","Faites fondre le beurre, versez les œufs, ajoutez le comté.","Repliez quand le dessus est encore baveux. Servez avec le pain et la tomate."]},
+ {id:"galette",nom:"Galette de sarrasin jambon, œuf et emmental",themes:["Fromage","Viande"],min:20,
+  ing:[[50,"g","farine de sarrasin"],[100,"ml","eau"],[1,"pincée(s)","sel"],[5,"g","beurre"],[1,"tranche(s)","jambon blanc sans ail ni oignon"],[1,"","œuf(s)"],[30,"g","emmental râpé"]],
+  et:["Mélangez la farine, l’eau et le sel.","Versez une louche de pâte dans une poêle beurrée bien chaude, cuisez 2 min.","Retournez, ajoutez le jambon, l’emmental et cassez l’œuf au centre.","Repliez les bords et laissez cuire jusqu’à ce que le blanc soit pris."]},
+ {id:"veloute-potimarron",nom:"Velouté crémeux potimarron, comté et ciboulette",themes:["Soupe","Crémeux","Fromage"],min:25,
+  ing:[[75,"g","potimarron"],[100,"g","pommes de terre"],[75,"g","carotte"],[300,"ml","bouillon sans ail ni oignon"],[40,"ml","crème de riz"],[20,"g","comté râpé"],[1,"c. à s.","ciboulette ciselée"]],
+  et:["Faites cuire les légumes en morceaux dans le bouillon, 20 min.","Mixez avec la crème de riz.","Servez avec le comté et la ciboulette."]},
+ {id:"veloute-carotte",nom:"Velouté carotte, gingembre et crème de coco",themes:["Soupe","Crémeux"],min:25,
+  ing:[[150,"g","carotte"],[80,"g","pommes de terre"],[300,"ml","bouillon sans ail ni oignon"],[40,"ml","crème de coco"],[1,"c. à c.","gingembre frais râpé"],[0.5,"c. à c.","cumin"],[1,"c. à s.","ciboulette ciselée"]],
+  et:["Faites cuire les légumes en morceaux dans le bouillon avec le gingembre et le cumin, 20 min.","Mixez avec la crème de coco.","Servez avec la ciboulette."]},
+ {id:"veloute-courgette",nom:"Velouté de courgette, crème de riz, parmesan et ciboulette",themes:["Soupe","Crémeux","Fromage"],min:20,
+  ing:[[65,"g","courgette"],[120,"g","pommes de terre"],[300,"ml","bouillon sans ail ni oignon"],[40,"ml","crème de riz"],[15,"g","parmesan râpé"],[1,"c. à s.","ciboulette ciselée"]],
+  et:["Faites cuire la courgette et les pommes de terre en morceaux dans le bouillon, 15 min.","Mixez avec la crème de riz.","Servez avec le parmesan et la ciboulette."]},
+ {id:"minestrone",nom:"Minestrone sans oignon au parmesan",themes:["Soupe","Italien","Fromage"],min:30,
+  ing:[[75,"g","carotte"],[65,"g","courgette"],[80,"g","pommes de terre"],[40,"g","haricots verts"],[60,"g","tomates concassées en conserve"],[350,"ml","bouillon sans ail ni oignon"],[25,"g","pâtes sans gluten (crues)"],[1,"c. à s.","huile infusée à l’ail"],[15,"g","parmesan râpé"],[1,"c. à s.","basilic ciselé"]],
+  et:["Faites revenir les légumes en petits dés dans l’huile, 5 min.","Ajoutez les tomates et le bouillon, laissez mijoter 15 min.","Ajoutez les pâtes et cuisez le temps indiqué sur le paquet.","Servez avec le parmesan et le basilic."]},
+ {id:"soupe-thai",nom:"Soupe thaï coco, tofu et pak choï",themes:["Soupe","Tofu","Asiatique","Crémeux"],min:20,
+  ing:[[120,"g","tofu ferme"],[75,"g","pak choï"],[50,"g","carotte"],[300,"ml","bouillon sans ail ni oignon"],[50,"ml","crème de coco"],[1,"c. à c.","gingembre frais râpé"],[1,"c. à s.","sauce soja"],[40,"g","nouilles de riz (crues)"],[0.5,"","citron(s) vert(s)"],[1,"c. à s.","ciboulette ciselée"]],
+  et:["Portez le bouillon à frémissement avec le gingembre et la carotte en fines lamelles, 5 min.","Ajoutez le tofu en cubes, les nouilles et la crème de coco, 4 min.","Ajoutez le pak choï 2 min, puis la sauce soja et le jus de citron vert.","Servez avec la ciboulette."]},
+ {id:"soupe-aubergine",nom:"Soupe crémeuse d’aubergine rôtie au cumin",themes:["Soupe","Crémeux"],min:30,
+  ing:[[75,"g","aubergine"],[100,"g","pommes de terre"],[1,"c. à s.","huile d’olive"],[300,"ml","bouillon sans ail ni oignon"],[40,"ml","crème de coco"],[0.5,"c. à c.","cumin"],[1,"c. à s.","ciboulette ciselée"]],
+  et:["Dorez l’aubergine en dés dans l’huile avec le cumin, 8 min.","Ajoutez les pommes de terre et le bouillon, laissez cuire 15 min.","Mixez avec la crème de coco. Servez avec la ciboulette."]},
+ {id:"veloute-panais",nom:"Velouté panais-carotte au comté",themes:["Soupe","Crémeux","Fromage"],min:25,
+  ing:[[75,"g","panais"],[75,"g","carotte"],[80,"g","pommes de terre"],[300,"ml","bouillon sans ail ni oignon"],[40,"ml","crème de riz"],[20,"g","comté râpé"],[1,"c. à s.","ciboulette ciselée"]],
+  et:["Faites cuire les légumes en morceaux dans le bouillon, 20 min.","Mixez avec la crème de riz.","Servez avec le comté et la ciboulette."]},
+ {id:"salade-pates",nom:"Salade de pâtes à l’italienne, mozzarella et basilic",themes:["Salade","Italien","Fromage"],min:20,
+  ing:[[70,"g","pâtes sans gluten (crues)"],[5,"","tomate(s) cerise(s)"],[40,"g","mozzarella"],[6,"","olive(s) noire(s)"],[30,"g","roquette"],[1,"c. à s.","huile d’olive"],[1,"c. à c.","vinaigre balsamique"],[1,"c. à s.","basilic ciselé"]],
+  et:["Faites cuire les pâtes, rincez-les à l’eau froide.","Coupez les tomates et la mozzarella.","Mélangez le tout avec l’huile, le vinaigre et le basilic."]},
+ {id:"salade-cesar-tofu",nom:"Salade César au tofu croustillant",themes:["Salade","Tofu","Fromage"],min:20,
+  ing:[[75,"g","laitue"],[120,"g","tofu ferme"],[1,"c. à s.","fécule de maïs (Maïzena)"],[1,"c. à s.","huile d’olive"],[20,"g","parmesan râpé"],[1,"tranche(s)","pain au levain"],[1,"c. à s.","mayonnaise"],[1,"c. à c.","jus de citron"],[0.5,"c. à c.","moutarde"]],
+  et:[TOFU_PREP,TOFU_DORE,"Grillez le pain et coupez-le en croûtons.","Mélangez la mayonnaise, le citron, la moutarde et un peu d’eau.","Mélangez la laitue avec la sauce, ajoutez le tofu, les croûtons et le parmesan."]},
+ {id:"salade-tiede-tofu",nom:"Salade tiède de pommes de terre, tofu croustillant et sauce ciboulette",themes:["Salade","Tofu","Crémeux"],min:25,
+  ing:[[180,"g","pommes de terre"],[120,"g","tofu ferme"],[1,"c. à s.","fécule de maïs (Maïzena)"],[1,"c. à s.","huile d’olive"],[40,"g","mâche"],[50,"g","yaourt sans lactose"],[0.5,"c. à c.","moutarde"],[2,"c. à s.","ciboulette ciselée"],[1,"c. à c.","jus de citron"]],
+  et:["Faites cuire les pommes de terre à l’eau ou à la vapeur, 15 à 20 min.",TOFU_PREP,TOFU_DORE,"Mélangez le yaourt, la moutarde, la ciboulette et le citron.","Servez les pommes de terre tièdes et le tofu sur la mâche, nappés de sauce."]},
+ {id:"salade-riz-thon",nom:"Salade de riz méditerranéenne au thon, poivron et feta",themes:["Salade","Poisson","Grec"],min:20,
+  ing:[[70,"g","riz (cru)"],[80,"g","thon en conserve égoutté"],[50,"g","poivron vert"],[50,"g","concombre"],[6,"","olive(s) noire(s)"],[25,"g","feta"],[1,"c. à s.","huile d’olive"],[1,"c. à c.","vinaigre de vin"],[1,"c. à s.","ciboulette ciselée"]],
+  et:["Faites cuire le riz, rincez-le à l’eau froide.","Coupez le poivron et le concombre en dés, émiettez le thon et la feta.","Mélangez le tout avec l’huile, le vinaigre et la ciboulette."]},
+ {id:"salade-poulet-chevre",nom:"Salade de poulet grillé, aubergine rôtie et chèvre",themes:["Salade","Viande","Fromage"],min:25,
+  ing:[[110,"g","blanc de poulet"],[75,"g","aubergine"],[1.5,"c. à s.","huile d’olive"],[30,"g","fromage de chèvre"],[40,"g","roquette"],[65,"g","tomate"],[1,"c. à c.","vinaigre balsamique"],[1,"c. à s.","ciboulette ciselée"]],
+  et:["Dorez l’aubergine en dés dans 1 c. à s. d’huile, 8 min.","Grillez le poulet en lanières 6 à 7 min.","Disposez la roquette et la tomate, ajoutez l’aubergine, le poulet et le chèvre émietté.","Arrosez du reste d’huile et du vinaigre, parsemez de ciboulette."]},
+ {id:"salade-lentilles",nom:"Salade de lentilles, carotte, feta et noix",themes:["Salade","Fromage"],min:15,
+  ing:[[45,"g","lentilles en conserve, rincées"],[1,"","œuf(s) dur(s)"],[75,"g","carotte râpée"],[40,"g","mâche"],[30,"g","feta"],[15,"g","cerneaux de noix"],[1,"c. à s.","huile d’olive"],[1,"c. à c.","vinaigre de cidre"],[0.5,"c. à c.","moutarde"]],
+  et:["Faites cuire l’œuf 10 min, écalez-le.","Préparez la vinaigrette avec l’huile, le vinaigre et la moutarde.","Mélangez les lentilles, la carotte, la mâche, la feta et les noix. Ajoutez l’œuf en quartiers."]},
+ {id:"porridge",nom:"Porridge myrtilles et sirop d’érable",themes:["Porridge","Petit-déj et douceurs"],min:10,
+  ing:[[50,"g","flocons d’avoine"],[200,"ml","lait sans lactose"],[50,"g","myrtilles"],[1,"c. à s.","graines de chia"],[1,"c. à s.","sirop d’érable"]],
+  et:["Faites cuire les flocons dans le lait 5 min à feu doux en remuant.","Servez avec les myrtilles, les graines de chia et le sirop d’érable."]},
+ {id:"porridge-banane-cacahuete",nom:"Porridge banane et beurre de cacahuète",themes:["Porridge","Petit-déj et douceurs"],min:10,
+  ing:[[50,"g","flocons d’avoine"],[200,"ml","lait d’amande"],[0.5,"","banane(s) encore ferme(s)"],[1,"c. à s.","beurre de cacahuète"],[1,"c. à c.","sirop d’érable"],[1,"pincée(s)","cannelle"]],
+  et:["Faites cuire les flocons dans le lait d’amande avec la cannelle, 5 min en remuant.","Servez avec la banane en rondelles, le beurre de cacahuète et le sirop d’érable."]},
+ {id:"porridge-choco-framboise",nom:"Porridge chocolat et framboises",themes:["Porridge","Petit-déj et douceurs"],min:10,
+  ing:[[50,"g","flocons d’avoine"],[200,"ml","lait sans lactose"],[2,"c. à c.","cacao en poudre non sucré"],[1,"c. à s.","sirop d’érable"],[30,"g","framboises"],[10,"g","chocolat noir"]],
+  et:["Faites cuire les flocons dans le lait avec le cacao, 5 min en remuant.","Sucrez au sirop d’érable, ajoutez les framboises et le chocolat râpé."]},
+ {id:"porridge-coco-ananas",nom:"Porridge coco et ananas",themes:["Porridge","Petit-déj et douceurs","Crémeux"],min:10,
+  ing:[[50,"g","flocons d’avoine"],[150,"ml","lait sans lactose"],[30,"ml","crème de coco"],[70,"g","ananas"],[1,"c. à s.","noix de coco râpée"],[1,"c. à c.","sirop d’érable"]],
+  et:["Faites cuire les flocons dans le lait 5 min, puis ajoutez la crème de coco.","Servez avec l’ananas en dés, la noix de coco et le sirop d’érable."]},
+ {id:"porridge-epices",nom:"Porridge façon pain d’épices et noix de pécan",themes:["Porridge","Petit-déj et douceurs"],min:10,
+  ing:[[50,"g","flocons d’avoine"],[200,"ml","lait sans lactose"],[0.5,"c. à c.","cannelle"],[1,"pincée(s)","gingembre moulu"],[1,"pincée(s)","muscade"],[1,"c. à s.","sirop d’érable"],[10,"g","noix de pécan"]],
+  et:["Faites cuire les flocons dans le lait avec les épices, 5 min en remuant.","Servez avec le sirop d’érable et les noix de pécan concassées."]},
+ {id:"porridge-carrot-cake",nom:"Porridge façon carrot cake",themes:["Porridge","Petit-déj et douceurs"],min:10,
+  ing:[[50,"g","flocons d’avoine"],[200,"ml","lait sans lactose"],[40,"g","carotte râpée"],[0.5,"c. à c.","cannelle"],[1,"c. à s.","sirop d’érable"],[15,"g","cerneaux de noix"]],
+  et:["Faites cuire les flocons dans le lait avec la carotte et la cannelle, 6 min en remuant.","Servez avec le sirop d’érable et les noix."]},
+ {id:"overnight-fraise",nom:"Overnight oats fraise-vanille (à préparer la veille)",themes:["Porridge","Petit-déj et douceurs","Crémeux"],min:5,
+  ing:[[50,"g","flocons d’avoine"],[100,"g","yaourt sans lactose"],[80,"ml","lait sans lactose"],[1,"c. à s.","graines de chia"],[0.5,"c. à c.","extrait de vanille"],[1,"c. à c.","sirop d’érable"],[65,"g","fraises"]],
+  et:["La veille, mélangez les flocons, le yaourt, le lait, le chia, la vanille et le sirop d’érable dans un bocal.","Laissez au réfrigérateur toute la nuit.","Le matin, ajoutez les fraises coupées."],cons:"2 jours au réfrigérateur, bocal fermé."},
+ {id:"gateau-chocolat",nom:"Gâteau fondant au chocolat",themes:["Gâteaux","Petit-déj et douceurs"],min:35,lot:8,
+  ing:[[150,"g","chocolat noir"],[100,"g","beurre"],[100,"g","sucre"],[3,"","œuf(s)"],[40,"g","fécule de maïs (Maïzena)"]],
+  et:["Préchauffez le four à 180 °C.","Faites fondre le chocolat et le beurre.","Fouettez les œufs et le sucre, ajoutez le chocolat fondu puis la Maïzena.","Versez dans un moule beurré et enfournez 20 à 25 min."],cons:"4 jours sous cloche à température ambiante. Se congèle en parts."},
+ {id:"gateau-yaourt",nom:"Gâteau au yaourt sans lactose et citron",themes:["Gâteaux","Petit-déj et douceurs"],min:45,lot:8,
+  ing:[[125,"g","yaourt sans lactose"],[150,"g","sucre"],[3,"","œuf(s)"],[150,"g","farine de riz"],[60,"g","fécule de maïs (Maïzena)"],[80,"ml","huile de colza"],[2,"c. à c.","levure chimique"],[1,"","citron(s)"]],
+  et:["Préchauffez le four à 180 °C.","Mélangez le yaourt, le sucre, les œufs et le zeste du citron.","Ajoutez la farine, la Maïzena et la levure, puis l’huile et le jus du citron.","Versez dans un moule beurré et enfournez 35 min."],cons:"5 jours dans une boîte hermétique. Se congèle en parts."},
+ {id:"cake-banane",nom:"Cake banane et noix",themes:["Gâteaux","Petit-déj et douceurs"],min:55,lot:8,unite:"tranches",
+  ing:[[2,"","banane(s) bien mûre(s)"],[2,"","œuf(s)"],[80,"g","sucre roux"],[80,"g","beurre fondu"],[150,"g","farine de riz"],[50,"g","fécule de maïs (Maïzena)"],[2,"c. à c.","levure chimique"],[1,"c. à c.","cannelle"],[60,"g","cerneaux de noix"]],
+  et:["Préchauffez le four à 180 °C.","Écrasez les bananes, ajoutez les œufs, le sucre et le beurre fondu.","Ajoutez la farine, la Maïzena, la levure et la cannelle, puis les noix concassées.","Versez dans un moule à cake et enfournez 40 à 45 min."],cons:"5 jours emballé dans du film. Se congèle en tranches."},
+ {id:"moelleux-citron-amande",nom:"Moelleux citron-amande",themes:["Gâteaux","Petit-déj et douceurs"],min:40,lot:8,
+  ing:[[80,"g","poudre d’amande"],[80,"g","farine de riz"],[100,"g","sucre"],[3,"","œuf(s)"],[80,"g","beurre fondu"],[2,"","citron(s)"],[2,"c. à c.","levure chimique"]],
+  et:["Préchauffez le four à 180 °C.","Fouettez les œufs et le sucre, ajoutez le beurre fondu, le zeste et le jus des citrons.","Ajoutez la poudre d’amande, la farine et la levure.","Versez dans un moule beurré et enfournez 25 min."],cons:"4 jours dans une boîte hermétique."},
+ {id:"muffins-myrtilles",nom:"Muffins aux myrtilles",themes:["Gâteaux","Petit-déj et douceurs"],min:35,lot:10,unite:"muffins",
+  ing:[[180,"g","farine de riz"],[40,"g","fécule de maïs (Maïzena)"],[90,"g","sucre"],[2,"c. à c.","levure chimique"],[2,"","œuf(s)"],[150,"ml","lait sans lactose"],[70,"ml","huile de colza"],[1,"c. à c.","extrait de vanille"],[100,"g","myrtilles"]],
+  et:["Préchauffez le four à 180 °C.","Mélangez la farine, la Maïzena, le sucre et la levure.","Ajoutez les œufs, le lait, l’huile et la vanille, mélangez juste assez.","Incorporez les myrtilles, remplissez des moules à muffins et enfournez 20 à 22 min."],cons:"3 jours dans une boîte hermétique. Se congèlent très bien."},
+ {id:"gateau-ananas",nom:"Gâteau renversé à l’ananas",themes:["Gâteaux","Petit-déj et douceurs"],min:50,lot:8,
+  ing:[[300,"g","ananas"],[120,"g","sucre roux"],[100,"g","beurre"],[3,"","œuf(s)"],[120,"g","farine de riz"],[40,"g","fécule de maïs (Maïzena)"],[2,"c. à c.","levure chimique"],[50,"ml","lait sans lactose"]],
+  et:["Préchauffez le four à 180 °C.","Faites fondre 40 g de sucre avec 30 g de beurre au fond du moule, disposez l’ananas en tranches.","Fouettez le reste du beurre fondu et du sucre avec les œufs, ajoutez la farine, la Maïzena, la levure et le lait.","Versez sur l’ananas, enfournez 35 min, puis démoulez à l’envers."],cons:"3 jours au réfrigérateur."},
+ {id:"barres-cacahuete",nom:"Barres de céréales avoine, cacahuète et chocolat (sans cuisson)",themes:["Barres et biscuits","Petit-déj et douceurs"],min:15,lot:12,unite:"barres",
+  ing:[[200,"g","flocons d’avoine"],[120,"g","beurre de cacahuète"],[80,"ml","sirop d’érable"],[40,"g","graines de courge"],[60,"g","chocolat noir"],[1,"pincée(s)","sel"]],
+  et:["Faites tiédir le beurre de cacahuète avec le sirop d’érable.","Mélangez avec les flocons, les graines de courge, le sel et la moitié du chocolat haché.","Tassez dans un plat chemisé de papier cuisson, nappez du reste de chocolat fondu.","Laissez prendre 2 h au réfrigérateur, puis coupez en barres."],cons:"1 semaine au réfrigérateur. Se congèlent."},
+ {id:"barres-riz-souffle",nom:"Barres croustillantes riz soufflé, érable et cacahuètes",themes:["Barres et biscuits","Petit-déj et douceurs"],min:30,lot:12,unite:"barres",
+  ing:[[100,"g","riz soufflé"],[80,"g","flocons d’avoine"],[60,"g","cacahuètes concassées"],[2,"c. à s.","graines de chia"],[90,"ml","sirop d’érable"],[40,"g","beurre"]],
+  et:["Préchauffez le four à 160 °C.","Faites fondre le beurre avec le sirop d’érable.","Mélangez avec le riz soufflé, les flocons, les cacahuètes et le chia.","Tassez dans un plat chemisé et enfournez 15 min. Laissez refroidir complètement avant de couper."],cons:"1 semaine dans une boîte hermétique."},
+ {id:"granola",nom:"Granola maison érable et noix de pécan",themes:["Barres et biscuits","Porridge","Petit-déj et douceurs"],min:35,lot:8,unite:"portions de 40 g",
+  ing:[[250,"g","flocons d’avoine"],[60,"g","noix de pécan"],[40,"g","graines de courge"],[80,"ml","sirop d’érable"],[3,"c. à s.","huile de colza"],[1,"c. à c.","cannelle"]],
+  et:["Préchauffez le four à 160 °C.","Mélangez tous les ingrédients et étalez sur une plaque.","Enfournez 20 à 25 min en remuant à mi-cuisson.","Laissez refroidir : le granola devient croustillant."],cons:"3 semaines dans un bocal fermé."},
+ {id:"cookies-cacahuete",nom:"Cookies au beurre de cacahuète et chocolat (sans farine)",themes:["Barres et biscuits","Petit-déj et douceurs"],min:25,lot:12,unite:"cookies",
+  ing:[[200,"g","beurre de cacahuète"],[120,"g","sucre roux"],[1,"","œuf(s)"],[0.5,"c. à c.","levure chimique"],[50,"g","chocolat noir"]],
+  et:["Préchauffez le four à 180 °C.","Mélangez le beurre de cacahuète, le sucre, l’œuf et la levure, puis le chocolat haché.","Formez 12 boules, aplatissez-les sur une plaque.","Enfournez 10 à 12 min : ils durcissent en refroidissant."],cons:"1 semaine dans une boîte hermétique."},
+ {id:"sables-vanille",nom:"Sablés vanille à la farine de riz",themes:["Barres et biscuits","Petit-déj et douceurs"],min:40,lot:20,unite:"sablés",
+  ing:[[150,"g","farine de riz"],[50,"g","fécule de maïs (Maïzena)"],[100,"g","beurre"],[70,"g","sucre"],[1,"","œuf(s)"],[1,"c. à c.","extrait de vanille"]],
+  et:["Sablez la farine, la Maïzena et le beurre du bout des doigts.","Ajoutez le sucre, l’œuf et la vanille, formez une boule. Réfrigérez 20 min.","Étalez, découpez et enfournez 12 min à 180 °C."],cons:"2 semaines dans une boîte en métal."},
+ {id:"energy-balls",nom:"Energy balls avoine, cacao et cacahuète",themes:["Barres et biscuits","Petit-déj et douceurs"],min:15,lot:14,unite:"boules",
+  ing:[[100,"g","flocons d’avoine"],[80,"g","beurre de cacahuète"],[40,"ml","sirop d’érable"],[15,"g","cacao en poudre non sucré"],[1,"c. à s.","graines de chia"]],
+  et:["Mélangez tous les ingrédients.","Formez 14 boules entre vos mains.","Laissez raffermir 30 min au réfrigérateur."],cons:"1 semaine au réfrigérateur. Se congèlent."},
+ {id:"pancakes",nom:"Pancakes banane et avoine",themes:["Petit-déj et douceurs"],min:15,
+  ing:[[1,"","banane(s) encore ferme(s)"],[2,"","œuf(s)"],[30,"g","flocons d’avoine"],[1,"pincée(s)","cannelle"],[5,"g","beurre"],[1,"c. à s.","sirop d’érable"]],
+  et:["Mixez la banane, les œufs, les flocons et la cannelle.","Versez de petites louches dans une poêle beurrée, 2 min de chaque côté.","Servez avec le sirop d’érable."]},
+ {id:"yaourt",nom:"Yaourt sans lactose, fraises et noix",themes:["Petit-déj et douceurs"],min:5,
+  ing:[[125,"g","yaourt sans lactose"],[65,"g","fraises"],[15,"g","cerneaux de noix"],[1,"c. à c.","sirop d’érable"]],
+  et:["Versez le yaourt dans un bol, ajoutez les fraises coupées, les noix et le sirop d’érable."]},
+ {id:"crumble",nom:"Crumble fraise-rhubarbe à l’avoine",themes:["Petit-déj et douceurs"],min:40,
+  ing:[[75,"g","rhubarbe"],[65,"g","fraises"],[25,"g","flocons d’avoine"],[15,"g","farine de riz"],[15,"g","beurre froid"],[15,"g","sucre roux"]],
+  et:["Préchauffez le four à 180 °C. Coupez les fruits dans un plat.","Sablez du bout des doigts les flocons, la farine, le beurre et le sucre.","Répartissez sur les fruits et enfournez 25 min."]}
+];
+
+const ALIMENTS = {
+ "Légumes":[
+  ["Carotte","ok","75 g"],["Courgette","ok","65 g"],["Concombre","ok","75 g"],["Aubergine","ok","75 g"],
+  ["Tomate","ok","65 g (½ tomate moyenne)"],["Tomates cerises","ok","5 tomates (75 g)"],["Poivron vert","ok","75 g"],
+  ["Épinards","ok","75 g"],["Laitue, mâche, roquette","ok","75 g"],["Blettes","ok","75 g"],["Kale (chou frisé)","ok","75 g"],
+  ["Pak choï, chou chinois","ok","75 g"],["Radis","ok","75 g"],["Navet","ok","75 g"],["Panais","ok","75 g"],
+  ["Céleri-rave","ok","75 g"],["Potimarron","ok","75 g"],["Pomme de terre","ok","Libre (environ 1 grosse)"],
+  ["Pousses de bambou","ok","75 g"],["Germes de soja","ok","75 g"],["Olives","ok","15 petites"],
+  ["Pleurotes","ok","75 g"],["Champignons en conserve, rincés","ok","75 g"],["Vert de poireau","ok","75 g"],
+  ["Vert de ciboule, ciboulette","ok","À volonté en assaisonnement"],["Gingembre frais","ok","1 c. à s."],
+  ["Poivron rouge","lim","40 g"],["Brocoli (têtes)","lim","75 g"],["Haricots verts","lim","75 g (environ 15 haricots)"],
+  ["Chou vert, chou rouge","lim","75 g"],["Patate douce","lim","75 g"],["Fenouil (bulbe)","lim","45 g"],
+  ["Butternut","lim","45 g"],["Maïs","lim","½ épi (40 g)"],["Petits pois","lim","15 g (1 c. à s.)"],
+  ["Betterave","lim","2 tranches (20 g)"],["Céleri branche","lim","5 cm (10 g)"],["Choux de Bruxelles","lim","2 choux"],
+  ["Ail","non"],["Oignon (toutes couleurs)","non"],["Échalote","non"],["Blanc de poireau","non"],["Asperges","non"],
+  ["Artichaut","non"],["Chou-fleur","non"],["Champignons de Paris","non"],["Topinambour","non"]],
+ "Fruits":[
+  ["Banane encore ferme","ok","1 moyenne"],["Fraises","ok","5 moyennes (65 g)"],["Framboises","ok","30 framboises (60 g)"],
+  ["Myrtilles","ok","1 poignée (50 g)"],["Kiwi","ok","2 kiwis"],["Orange","ok","1 moyenne"],["Clémentine, mandarine","ok","1 grosse ou 2 petites"],
+  ["Citron, citron vert","ok","Le jus, à volonté en cuisine"],["Ananas","ok","140 g (2 tranches)"],["Raisin","ok","150 g (1 grappe moyenne)"],
+  ["Melon","ok","120 g (1 tranche)"],["Papaye","ok","140 g"],["Fruit de la passion","ok","2 fruits"],["Rhubarbe","ok","150 g"],
+  ["Avocat","lim","30 g (⅛ d’avocat)"],["Pamplemousse","lim","½ fruit"],["Noix de coco râpée","lim","2 c. à s."],["Banane bien mûre","lim","⅓ de banane"],
+  ["Pomme","non"],["Poire","non"],["Mangue","non"],["Pastèque","non"],["Cerises","non"],["Abricot","non"],["Pêche, nectarine","non"],
+  ["Prune","non"],["Figue","non"],["Mûres","non"],["Fruits secs (dattes, pruneaux, figues sèches)","non"],["Jus de pomme ou de poire","non"]],
+ "Féculents et céréales":[
+  ["Riz (toutes variétés)","ok","1 bol cuit (190 g)"],["Quinoa","ok","155 g cuit"],["Sarrasin","ok","135 g cuit"],["Millet","ok","160 g cuit"],
+  ["Polenta","ok","1 bol cuit"],["Pomme de terre","ok","Libre"],["Flocons d’avoine","ok","50 g crus"],["Pâtes sans gluten","ok","145 g cuites"],
+  ["Nouilles et vermicelles de riz","ok","190 g cuits"],["Pain au levain (blé ou épeautre)","ok","2 tranches"],["Pain sans gluten","ok","2 tranches"],
+  ["Galettes de riz","ok","2 galettes"],["Tortillas de maïs","ok","2 tortillas"],["Farine de riz, de sarrasin, fécule de maïs","ok","Pour cuisiner"],
+  ["Pâtes de blé classiques","lim","75 g cuites"],["Pain blanc classique","lim","1 tranche"],["Couscous","lim","45 g cuit"],["Boulgour","lim","45 g cuit"],
+  ["Seigle (pain, crackers)","non"],["Orge","non"],["Viennoiseries et biscuits classiques","non"],["Céréales au blé ou au miel","non"]],
+ "Protéines":[
+  ["Œufs","ok","Libre"],["Poissons nature","ok","Libre"],["Fruits de mer","ok","Libre"],["Viandes et volailles nature","ok","Libre"],
+  ["Tofu ferme","ok","170 g"],["Tempeh","ok","100 g"],["Edamame","ok","90 g"],
+  ["Lentilles en conserve, rincées","lim","45 g égouttées"],["Pois chiches en conserve, rincés","lim","40 g égouttés"],
+  ["Haricots rouges, blancs, noirs","non"],["Fèves","non"],["Pois cassés","non"],["Tofu soyeux","non"],["Charcuteries et plats préparés à l’ail ou à l’oignon","non"]],
+ "Oléagineux et graines":[
+  ["Cacahuètes","ok","30 g (une trentaine)"],["Noix","ok","10 cerneaux"],["Noix de pécan","ok","10 moitiés"],["Noix de macadamia","ok","20 noix"],
+  ["Pignons","ok","1 c. à s."],["Graines de courge","ok","2 c. à s."],["Graines de chia","ok","2 c. à s."],["Graines de lin","ok","1 c. à s."],
+  ["Sésame","ok","1 c. à s."],["Graines de tournesol","ok","2 c. à c."],["Beurre de cacahuète","ok","2 c. à s."],
+  ["Amandes","lim","10 amandes"],["Noisettes","lim","10 noisettes"],
+  ["Noix de cajou","non"],["Pistaches","non"]],
+ "Laitages et fromages":[
+  ["Lait sans lactose","ok","250 ml"],["Yaourt sans lactose","ok","1 à 2 pots"],["Fromage blanc sans lactose","ok","150 g"],
+  ["Boisson d’amande","ok","250 ml"],["Boisson de soja (protéines de soja)","ok","250 ml"],["Boisson de riz","ok","200 ml"],["Beurre","ok","1 c. à s."],
+  ["Comté, emmental, cheddar, parmesan, gouda","ok","40 g"],["Brie, camembert","ok","40 g"],["Mozzarella","ok","40 g"],["Feta","ok","40 g"],["Fromage de chèvre","ok","40 g"],["Halloumi","ok","40 g"],["Crème de riz (cuisine)","ok","100 ml, sans inuline ajoutée"],["Crème de coco","ok","60 ml (4 c. à s.)"],
+  ["Crème","lim","2 c. à s."],["Fromage à tartiner","lim","2 c. à s."],["Ricotta, cottage cheese","lim","2 c. à s."],["Boisson d’avoine","lim","100 ml"],["Lait de coco en conserve","lim","80 ml"],
+  ["Lait, yaourt, fromage blanc classiques","non"],["Lait concentré","non"],["Glaces classiques","non"]],
+ "Sauces et condiments":[
+  ["Huiles (olive, colza, tournesol)","ok","Libre"],["Huile infusée à l’ail (sans morceaux)","ok","1 c. à s."],["Mayonnaise","ok","2 c. à s."],
+  ["Moutarde","ok","1 c. à s."],["Sauce soja, tamari","ok","2 c. à s."],["Sauce de poisson","ok","1 c. à s."],["Vinaigre de vin, de cidre, de riz","ok","2 c. à s."],
+  ["Câpres","ok","1 c. à s."],["Pesto ou sauce tomate maison sans ail ni oignon","ok","2 c. à s. de pesto, 1 louche de sauce"],
+  ["Ketchup","lim","1 c. à s."],["Vinaigre balsamique","lim","1 c. à s."],["Concentré de tomate","lim","2 c. à s."],["Tomates concassées en conserve","lim","90 g"],
+  ["Sauces industrielles à l’ail ou à l’oignon","non"],["Vinaigrettes toutes prêtes","non"],["Sauce barbecue","non"],["Bouillons cubes classiques","non"],["Houmous du commerce","non"]],
+ "Herbes et épices":[
+  ["Herbes fraîches ou sèches (basilic, persil, coriandre, menthe, thym, romarin, aneth, origan)","ok","À volonté"],
+  ["Cumin, curcuma, paprika, poivre, cannelle, muscade, cardamome, safran","ok","1 c. à c."],["Gingembre moulu","ok","1 c. à c."],
+  ["Graines de coriandre, de fenouil, de moutarde","ok","1 c. à c."],["Asafoetida (goût d’oignon)","ok","1 pincée"],
+  ["Piment","lim","Selon votre tolérance : sans FODMAP mais irritant"],
+  ["Ail en poudre","non"],["Oignon en poudre","non"],["Mélanges tout faits avec ail ou oignon (certains curry, épices à tacos, ras el hanout)","non"]],
+ "Sucres et douceurs":[
+  ["Sucre blanc ou roux","ok","1 à 2 c. à s."],["Sirop d’érable","ok","2 c. à s."],["Chocolat noir","ok","30 g (5 carrés)"],
+  ["Confiture de fraise","ok","2 c. à s."],["Sirop de riz","ok","1 c. à s."],["Chocolat au lait","lim","20 g (3 carrés)"],
+  ["Miel","non"],["Sirop d’agave","non"],["Sirop de glucose-fructose","non"],["Édulcorants en -ol (sorbitol, mannitol, xylitol, maltitol)","non"]],
+ "Boissons":[
+  ["Eau","ok","Libre"],["Thé vert","ok","1 tasse (250 ml)"],["Thé noir léger","ok","1 tasse (250 ml)"],["Infusion menthe poivrée ou gingembre","ok","1 tasse"],
+  ["Café","ok","1 à 2 tasses par jour"],["Vin, bière","lim","1 verre"],
+  ["Jus de pomme ou de poire","non"],["Sodas au sirop de glucose-fructose","non"],["Infusion de camomille ou de fenouil","non"],["Thé chaï fort","non"],["Rhum, vins doux","non"]]
+};
+
+
+const THEMES = ["Tofu","Italien","Grec","Crémeux","Fromage","Express","Soupe","Salade","Asiatique","Poisson","Viande","Petit-déj et douceurs","Porridge","Gâteaux","Barres et biscuits"];
+const MAX = 7;
+const LIB = {ok:"Conseillé",lim:"Portion limitée",non:"À éviter"};
+const SYMPTOMES = ["Ballonnements","Douleurs au ventre","Crampes","Gaz","Nausées","Brûlures, reflux","Ventre qui gargouille","Envie urgente d’aller aux toilettes","Fatigue","Maux de tête"];
+const BRISTOL = [[1,"Petites billes dures, difficiles à évacuer"],[2,"En forme de saucisse, grumeleuse"],[3,"Saucisse avec des craquelures"],[4,"Lisse et molle, en forme de serpent (idéal)"],[5,"Morceaux mous aux bords nets"],[6,"Morceaux floconneux, pâteux"],[7,"Liquide, sans morceaux"]];
+const SEV = {1:"léger",2:"modéré",3:"fort"};
+const ICON = {repas:"🍽️",aliment:"🥕",traitement:"💊",symptome:"⚡",selles:"🚽"};
+const TYPES = [["repas","Repas"],["aliment","Aliment"],["traitement","Traitement"],["symptome","Symptôme"],["selles","Selles"]];
+const SKIP = ["sel","eau"];
+const CANON = [
+ ["riz soufflé","Riz soufflé"],["noix de pécan","Noix de pécan"],["cacao","Cacao"],["beurre de cacahuète","Beurre de cacahuète"],["crème de riz","Crème de riz"],["crème de coco","Crème de coco"],["cerise","Tomates cerises"],["poivron vert","Poivron vert"],["aubergine","Aubergine"],["polenta","Polenta"],["mozzarella","Mozzarella"],["halloumi","Halloumi"],["lardon","Lardons"],["bœuf","Bœuf haché"],["câpre","Câpres"],["menthe","Menthe"],["roquette","Roquette"],["farine de riz","Farine de riz"],["nouilles de riz","Nouilles de riz"],["farine de sarrasin","Farine de sarrasin"],
+ ["tomate(s) cerise","Tomates cerises"],["tomates concassées","Tomates concassées en conserve"],["tomate","Tomate"],
+ ["citron(s) vert","Citron vert"],["citron","Citron"],["huile infusée","Huile infusée à l’ail"],["huile d’olive","Huile d’olive"],
+ ["lait de coco","Lait de coco"],["lait sans lactose","Lait sans lactose"],["yaourt sans lactose","Yaourt sans lactose"],
+ ["flocons d’avoine","Flocons d’avoine"],["myrtille","Myrtilles"],["graines de chia","Graines de chia"],["graines de courge","Graines de courge"],["graines de sésame","Sésame"],
+ ["sirop d’érable","Sirop d’érable"],["œuf","Œufs"],["pain au levain","Pain au levain"],["beurre","Beurre"],["ciboulette","Ciboulette"],["vert de ciboule","Vert de ciboule"],
+ ["banane","Banane"],["cannelle","Cannelle"],["riz","Riz"],["thon","Thon"],["concombre","Concombre"],["olive","Olives"],["feta","Feta"],["vinaigre","Vinaigre"],
+ ["basilic","Basilic"],["saumon","Saumon"],["pommes de terre","Pomme de terre"],["haricots verts","Haricots verts"],["aneth","Aneth"],["crevette","Crevettes"],
+ ["courgette","Courgette"],["poivron rouge","Poivron rouge"],["paprika","Paprika"],["persil","Persil"],["cabillaud","Cabillaud"],["quinoa","Quinoa"],["comté","Comté"],
+ ["mâche","Mâche"],["tofu","Tofu ferme"],["pak choï","Pak choï"],["carotte","Carotte"],["gingembre","Gingembre"],["sauce soja","Sauce soja"],["pois chiches","Pois chiches"],
+ ["épinards","Épinards"],["curry","Curry en poudre"],["curcuma","Curcuma"],["cumin","Cumin"],["coriandre","Coriandre"],["potimarron","Potimarron"],["poireau","Vert de poireau"],
+ ["bouillon","Bouillon sans ail ni oignon"],["parmesan","Parmesan"],["muscade","Muscade"],["pâtes sans gluten","Pâtes sans gluten"],["origan","Origan"],["tempeh","Tempeh"],
+ ["patate douce","Patate douce"],["kale","Kale"],["lentilles","Lentilles"],["noix","Noix"],["moutarde","Moutarde"],["fécule de maïs","Fécule de maïs"],["chèvre","Fromage de chèvre"],
+ ["thym","Thym"],["poulet","Poulet"],["tortilla","Tortillas de maïs"],["laitue","Laitue"],["cheddar","Cheddar"],["jambon","Jambon blanc"],["emmental","Emmental"],
+ ["steak haché","Steak haché"],["crème","Crème"],["fraise","Fraises"],["rhubarbe","Rhubarbe"],["sucre","Sucre"]
+];
+function canon(n){ const l=n.toLowerCase(); if(SKIP.includes(l)) return null; for(const [k,v] of CANON) if(l.includes(k)) return v; return n.charAt(0).toUpperCase()+n.slice(1); }
+function itemsRecette(r){ return [...new Set(r.ing.map(i=>canon(i[2])).filter(Boolean))]; }
+const TOUS_ALIMENTS = Object.values(ALIMENTS).flat();
+function statutDe(nom){
+  const l=nom.toLowerCase();
+  const f=TOUS_ALIMENTS.find(a=>a[0].toLowerCase()===l) || TOUS_ALIMENTS.find(a=>a[0].toLowerCase().split(/[,(]/)[0].trim()===l) || TOUS_ALIMENTS.find(a=>a[0].toLowerCase().includes(l));
+  return f ? f[1] : null;
+}
+
+/* ---------- Données et enregistrement ---------- */
+const LKEY = "fodmap-cuisine-v2";
+const REG0 = () => ({pers:2, coche:{}, traitements:[], repasPerso:[]});
+let D = {reg:REG0(), recettes:[], semaines:{}, jours:{}, jmeta:{}, placard:null, reintro:{start:null, tests:{}}};
+try{
+  const v2 = JSON.parse(localStorage.getItem(LKEY)||"null");
+  if(v2 && v2.reg){
+    const reg = Object.assign(REG0(), v2.reg); delete reg.sel;
+    D = {reg, recettes:v2.recettes||[], semaines:v2.semaines||{}, jours:v2.jours||{}, jmeta:v2.jmeta||{}, placard:v2.placard||null, reintro:v2.reintro||{start:null, tests:{}}};
+  }
+}catch(e){}
+function saveLocal(){ try{ localStorage.setItem(LKEY, JSON.stringify(D)); }catch(e){} }
+
+let COL = null; const pend = new Set(); let tmr = null; const chains = {};
+function setStatus(m){
+  $("#statut").textContent = m==="compte" ? "Journal enregistré sur votre compte" :
+    m==="erreur" ? "Enregistrement sur le compte impossible pour l’instant : vos données restent sur cet appareil" :
+    "Journal enregistré sur cet appareil";
+}
+function persist(docId){ saveLocal(); if(!COL) return; pend.add(docId); clearTimeout(tmr); tmr = setTimeout(flush, 700); }
+const clone = o => JSON.parse(JSON.stringify(o));
+function payload(id){
+  if(id==="reglages") return clone(D.reg);
+  if(id==="recettes") return {list:clone(D.recettes)};
+  if(id==="semaines") return {map:clone(D.semaines)};
+  if(id==="reintro") return clone(D.reintro);
+  if(id==="placard") return {items:clone(D.placard||[])};
+  return {date:id.slice(2), type:(D.jmeta[id.slice(2)]||{}).type||null, entries:clone(D.jours[id.slice(2)]||[])};
+}
+function flush(){ const ids=[...pend]; pend.clear(); ids.forEach(id=>{ chains[id]=(chains[id]||Promise.resolve()).then(()=>ecrire(id,0)); }); }
+async function ecrire(id, essais){
+  try{ await COL.doc(id).set(payload(id)); setStatus("compte"); }
+  catch(e){
+    if(e && e.code==="unavailable" && essais<1){ await new Promise(r=>setTimeout(r, 800+Math.random()*800)); return ecrire(id, essais+1); }
+    setStatus("erreur");
+  }
+}
+async function connecter(){
+  if(!(window.claude && typeof window.claude.use==="function")) return;
+  try{
+    const [db, user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+    if(!db || !user) return;
+    const uid = await user.id(); if(!uid) return;
+    const col = db.collection("data/users/"+uid);
+    const snap = await col.get();
+    let reg=null, rec=null, sem=null, ri=null, pl=null; const jours={}, metaR={};
+    snap.docs.forEach(d=>{
+      const v = clone(d.data()||{});
+      if(d.id==="reglages") reg=v;
+      else if(d.id==="recettes") rec=v.list||[];
+      else if(d.id==="semaines") sem=v.map||{};
+      else if(d.id==="reintro") ri=v;
+      else if(d.id==="placard") pl=v.items;
+      else if(d.id.startsWith("j-")){ jours[d.id.slice(2)]=v.entries||[]; if(v.type) metaR[d.id.slice(2)]=v.type; }
+    });
+    COL = col;
+    const aEnvoyer = new Set();
+    if(reg){ D.reg=Object.assign(REG0(), reg); delete D.reg.sel; } else aEnvoyer.add("reglages");
+    if(rec){ const ids=new Set(rec.map(r=>r.id)); const extra=D.recettes.filter(r=>!ids.has(r.id)); D.recettes=rec.concat(extra); if(extra.length) aEnvoyer.add("recettes"); }
+    else if(D.recettes.length) aEnvoyer.add("recettes");
+    if(sem){ const extra=Object.keys(D.semaines).filter(k=>!(k in sem)&&D.semaines[k].length); extra.forEach(k=>sem[k]=D.semaines[k]); D.semaines=sem; if(extra.length) aEnvoyer.add("semaines"); }
+    else if(Object.keys(D.semaines).length) aEnvoyer.add("semaines");
+    if(ri && ri.start) D.reintro={start:ri.start, tests:ri.tests||{}}; else if(D.reintro.start) aEnvoyer.add("reintro");
+    if(Array.isArray(pl) && pl.length) D.placard=pl; else if(D.placard) aEnvoyer.add("placard");
+    for(const [k, arr] of Object.entries(jours)){
+      const ids = new Set(arr.map(e=>e.id));
+      const extra = (D.jours[k]||[]).filter(e=>!ids.has(e.id));
+      D.jours[k] = arr.concat(extra);
+      if(extra.length) aEnvoyer.add("j-"+k);
+    }
+    for(const k of Object.keys(D.jours)) if(!(k in jours) && D.jours[k].length) aEnvoyer.add("j-"+k);
+    for(const k of Object.keys(D.jmeta)) if(D.jmeta[k].type && !metaR[k]) aEnvoyer.add("j-"+k);
+    Object.entries(metaR).forEach(([k,t])=>{ D.jmeta[k]={type:t}; });
+    saveLocal(); setStatus("compte");
+    aEnvoyer.forEach(id=>pend.add(id)); if(aEnvoyer.size) flush();
+    tout();
+  }catch(e){}
+}
+
+/* ---------- Outils ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pad = n => String(n).padStart(2,"0");
+const uidGen = () => Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+function cleJour(t){ return t.getFullYear()+"-"+pad(t.getMonth()+1)+"-"+pad(t.getDate()); }
+const aujourdhui = () => cleJour(new Date());
+const parH = (a,b) => a.h.localeCompare(b.h);
+function frac(n){ const r=Math.round(n*2)/2, e=Math.floor(r); if(r===e) return String(e); return e ? e+" ½" : "½"; }
+function qte(q,u,p){ let v=q*p; if(u==="g"||u==="ml") v = v<20 ? Math.round(v) : Math.round(v/5)*5; else v=frac(v); return v; }
+function ligne(i,p){ const [q,u,n]=i; if(q==null) return n; const v=qte(q,u,p); return u ? `${v} ${u} ${n}` : `${v} ${n}`; }
+function toast(t){ const el=$("#toast"); el.textContent=t; el.classList.add("show"); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove("show"),1800); }
+async function copier(t,msg){
+  try{ await navigator.clipboard.writeText(t); toast(msg); return; }catch(e){}
+  const ta=document.createElement("textarea"); ta.value=t; ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.select(); let ok=false; try{ ok=document.execCommand("copy"); }catch(e){}
+  ta.remove(); toast(ok?msg:"Copie impossible sur cet appareil");
+}
+
+let ui = {popen:new Set(), pedit:null, theme:"Tous", q:"", fq:"", ff:"tous", day:aujourdhui(), nuit:false, win:8};
+ui.week = (function(){ const t=new Date(); t.setDate(t.getDate()-((t.getDay()+6)%7)); return cleJour(t); })();
+
+/* ---------- Plats, semaine, import ---------- */
+const tousPlats = () => PLATS.concat(D.recettes);
+const platDe = id => tousPlats().find(p=>p.id===id);
+const themesDe = p => { const t=[...(p.themes||[])]; if(p.min && p.min<=20 && !t.includes("Express")) t.push("Express"); return t; };
+function lundiDe(dstr){ const t=new Date(dstr+"T12:00"); t.setDate(t.getDate()-((t.getDay()+6)%7)); return cleJour(t); }
+function decalerSemaine(k,n){ const t=new Date(k+"T12:00"); t.setDate(t.getDate()+7*n); return cleJour(t); }
+const libSemaine = k => "Semaine du "+new Date(k+"T12:00").toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"});
+const semaine = k => D.semaines[k]||[];
+
+/* Vérification FODMAP d’un ingrédient importé */
+const REGLES = [
+ [/sans ail|sans oignon|huile infus|vert de (poireau|ciboule)|ciboulette|pommes? de terre|tomate\(s\) cerise|tomates? cerises?|farine de (riz|sarrasin|maïs)|fécule|maïzena|polenta|tortilla|sans lactose|sans gluten|crème de (riz|coco)|lait de (coco|riz|soja|amande)|céleri-rave|levain|sarrasin/, null],
+ [/\bail\b|gousses? d.ail|oignon|échalote|poireau|asperge|artichaut|chou-fleur|champignons? de paris|topinambour|\bpommes?\b|\bpoires?\b|mangue|pastèque|cerise|abricot|pêche|nectarine|\bprunes?\b|figue|\bmûres?\b|datte|pruneau|raisins? secs|\bmiel\b|agave|glucose|haricots? (rouges?|blancs?|noirs?|secs?)|\bfèves?\b|pois cassés|tofu soyeux|cajou|pistache|seigle|\borge\b|fromage blanc|\blait\b|yaourt|houmous/, "non"],
+ [/bouillon/, "bouillon"],
+ [/poivron rouge|brocoli|\bchoux?\b|fenouil|butternut|\bmaïs\b|patate douce|petits? pois|betterave|céleri|lentille|pois chiche|avocat|amande|noisette|champignon|ketchup|balsamique|concentré de tomate|\bcrème\b|ricotta|mascarpone|fromage frais|cottage|farine|\bpâtes\b|\bpain\b|couscous|boulgour|semoule|chocolat au lait|noix de coco/, "lim"]
+];
+function verifier(nom){
+  const l=" "+nom.toLowerCase()+" ";
+  for(const [re,s] of REGLES) if(re.test(l)) return s;
+  return null;
+}
+function alertes(p){ return p.ing.map(i=>({n:i[2], s:verifier(i[2])})).filter(x=>x.s); }
+function htmlAlertes(list){
+  if(!list.length) return `<p class="okmsg">Aucun ingrédient à risque repéré.</p>`;
+  return `<ul class="warn">`+list.map(x=>x.s==="bouillon"
+    ? `<li><span class="dot lim"></span>${esc(x.n)} : vérifiez qu’il est sans ail ni oignon</li>`
+    : `<li><span class="dot ${x.s}"></span>${esc(x.n)} : ${x.s==="non"?"à éviter en phase d’élimination":"portion limitée, voir Aliments et portions"}</li>`).join("")+`</ul>`;
+}
+
+function texteJow(p, n){
+  return `${p.nom}\nPour ${p.lot?(p.lot*n)+" "+(p.unite||"parts"):n+" portion"+(n>1?"s":"")}${p.min?", "+p.min+" min":""}\n\nIngrédients :\n` + p.ing.map(i=>"- "+ligne(i,n)).join("\n")
+    + (p.et&&p.et.length ? "\n\nPréparation :\n" + p.et.map((e,k)=>`${k+1}. ${e}`).join("\n") : "") + (p.cons ? "\n\nConservation : "+p.cons : "");
+}
+function themesDispo(){ const s=new Set(THEMES); D.recettes.forEach(r=>(r.themes||[]).forEach(t=>s.add(t))); return [...s]; }
+function renderCats(){
+  const l=["Tous","Mes recettes",...themesDispo()];
+  $("#cats").innerHTML = l.map(c=>`<button class="chip" aria-pressed="${c===ui.theme}" data-cat="${esc(c)}">${esc(c)}</button>`).join("");
+}
+function tagsHtml(p){ return `<div class="tags">${p.perso?'<span class="me">Ma recette</span>':""}${themesDe(p).map(t=>`<span>${esc(t)}</span>`).join("")}</div>`; }
+function renderPlats(){
+  const p=D.reg.pers; $("#pers").textContent=p;
+  const wk=semaine(ui.week);
+  $("#platsIntro").innerHTML = `Pour la ${libSemaine(ui.week).toLowerCase()} : <strong>${wk.length} plat${wk.length>1?"s":""} sur ${MAX}</strong>. Les quantités respectent les portions conseillées.`;
+  const q=ui.q.trim().toLowerCase();
+  const l=tousPlats().filter(x=>(ui.theme==="Tous"||(ui.theme==="Mes recettes"?x.perso:themesDe(x).includes(ui.theme)))&&(!q||x.nom.toLowerCase().includes(q)||x.ing.some(i=>i[2].toLowerCase().includes(q))));
+  if(!l.length){ $("#liste").innerHTML=`<p class="empty">${ui.theme==="Mes recettes"&&!q?"Aucune recette importée pour l’instant. Touchez « Importer une recette » pour en ajouter.":"Aucun plat ne correspond. Essayez un autre ingrédient ou la thématique « Tous »."}</p>`; return; }
+  $("#liste").innerHTML = l.map(x=>{
+    const dans=wk.some(s=>s.id===x.id);
+    const al=x.perso?alertes(x):[];
+    return `<details class="rec"><summary><div class="rt"><h3>${esc(x.nom)}</h3><div class="meta">${x.min?x.min+" min":"Temps non indiqué"}${dans?' <span class="in-list">, dans ma semaine</span>':""}</div>${tagsHtml(x)}</div><span class="plus" aria-hidden="true">+</span></summary>
+    <div class="body"><h4>${x.lot?`Ingrédients pour ${x.lot} ${x.unite||"parts"} (1 ${(x.unite||"part").replace(/s$/,"").replace(/^portions de 40 g$/,"portion")} = 1 portion)`:`Ingrédients pour ${p} portion${p>1?"s":""}`}</h4><ul>${x.ing.map(i=>`<li>${esc(ligne(i,x.lot?1:p))}</li>`).join("")}</ul>${x.cons?`<p class="intro" style="margin:8px 0 0"><strong>Conservation :</strong> ${esc(x.cons)}</p>`:""}
+    ${x.perso?`<h4>Vérification FODMAP</h4>${htmlAlertes(al)}`:""}
+    ${x.et&&x.et.length?`<h4>Préparation</h4><ol>${x.et.map(e=>`<li>${esc(e)}</li>`).join("")}</ol>`:""}
+    <div class="actions"><button class="btn main" data-act="add" data-id="${x.id}">${dans?"Retirer de ma semaine":`Ajouter à ma semaine (${wk.length}/${MAX})`}</button>
+    <button class="btn" data-act="copy" data-id="${x.id}">Copier pour Jow</button>
+    ${x.perso?`<button class="btn" data-act="edit" data-id="${x.id}">Modifier</button><button class="btn" data-act="delr" data-id="${x.id}">Supprimer</button>`:""}</div></div></details>`;
+  }).join("");
+}
+function basculer(id){
+  const wk=semaine(ui.week).slice();
+  const i=wk.findIndex(s=>s.id===id);
+  if(i>=0){ wk.splice(i,1); toast("Retiré de ma semaine"); }
+  else{ if(wk.length>=MAX){ toast(`Votre semaine compte déjà ${MAX} plats : retirez-en un d’abord`); return false; } wk.push({id, p:(platDe(id)||{}).lot?1:D.reg.pers}); toast(`Ajouté à ma semaine (${wk.length}/${MAX})`); }
+  D.semaines[ui.week]=wk; persist("semaines"); return true;
+}
+
+function renderFF(){
+  const f=[["tous","Tous"],["ok","Conseillés"],["lim","Portion limitée"],["non","À éviter"]];
+  $("#ff").innerHTML=f.map(([k,l])=>`<button class="chip" aria-pressed="${k===ui.ff}" data-ff="${k}">${l}</button>`).join("");
+}
+function renderFoods(){
+  const q=ui.fq.trim().toLowerCase(); let h="";
+  for(const [cat,items] of Object.entries(ALIMENTS)){
+    const l=items.filter(([n,s])=>(ui.ff==="tous"||s===ui.ff)&&(!q||n.toLowerCase().includes(q)));
+    if(!l.length) continue;
+    h+=`<h2 class="cat">${cat}</h2><ul class="foods">`+l.map(([n,s,p])=>`<li><span class="dot ${s}" role="img" aria-label="${LIB[s]}"></span><span class="fname">${n}</span><span class="fport ${s==="non"?"non":""}">${s==="non"?"À éviter":p}</span></li>`).join("")+`</ul>`;
+  }
+  $("#foods").innerHTML = h || `<p class="empty">Aucun aliment trouvé. Vérifiez l’orthographe ou choisissez « Tous ».</p>`;
+}
+
+function agreger(k){
+  const m=new Map();
+  semaine(k).forEach(s=>{ const p=platDe(s.id); if(!p) return; p.ing.forEach(([q,u,n])=>{ if(SKIP.includes(n.toLowerCase())) return; const key=n+"|"+u; const o=m.get(key)||{q:0,u,n,sansQ:false}; if(q==null) o.sansQ=true; else o.q+=q*s.p; m.set(key,o); }); });
+  return [...m.entries()].map(([key,o])=>({k:key, t:o.q?ligne([o.q,o.u,o.n],1):o.n, n:o.n})).sort((a,b)=>a.n.localeCompare(b.n,"fr"));
+}
+function historique(){
+  const cles=Object.keys(D.semaines).filter(k=>D.semaines[k].length).sort().reverse();
+  const recent=cles.filter(k=>k<=ui.week).slice(0,8), mois=recent.slice(0,4);
+  const compte={}, compteMois={}, themesMois={};
+  recent.forEach(k=>D.semaines[k].forEach(s=>compte[s.id]=(compte[s.id]||0)+1));
+  mois.forEach(k=>D.semaines[k].forEach(s=>{ compteMois[s.id]=1; const p=platDe(s.id); if(p) themesDe(p).forEach(t=>themesMois[t]=(themesMois[t]||0)+1); }));
+  const souvent=Object.entries(compte).filter(([,c])=>c>=3).sort((a,b)=>b[1]-a[1]);
+  const aimes=Object.entries(themesMois).sort((a,b)=>b[1]-a[1]).map(([t])=>t);
+  const idees=tousPlats().filter(p=>!compteMois[p.id] && !themesDe(p).includes("Petit-déj et douceurs"))
+    .map(p=>({p, s:themesDe(p).filter(t=>aimes.slice(0,3).includes(t)).length + (compte[p.id]?0:0.5)}))
+    .sort((a,b)=>b.s-a.s).slice(0,4).map(x=>x.p);
+  return {cles, recent, souvent, themesMois, idees, nbDiff:Object.keys(compteMois).length, nbMois:mois.length};
+}
+function renderSemaine(){
+  const k=ui.week, wk=semaine(k);
+  $("#nb").textContent=semaine(lundiDe(aujourdhui())).length+"/"+MAX;
+  let h=`<div class="daybar"><button class="nav" data-wk="-1" aria-label="Semaine précédente">‹</button><h2 class="daylabel" style="flex:1;margin:0;font-size:1.15rem">${libSemaine(k)}</h2><button class="nav" data-wk="1" aria-label="Semaine suivante">›</button></div>
+   <div class="row" style="justify-content:space-between"><span class="counter">${wk.length} plat${wk.length>1?"s":""} sur ${MAX}</span>${k!==lundiDe(aujourdhui())?`<button class="btn" data-wk="0">Cette semaine</button>`:""}<button class="btn main" data-go="plats">${wk.length<MAX?"Choisir des plats":"Changer de plats"}</button></div>`;
+  if(!wk.length) h+=`<p class="empty">Aucun plat choisi pour cette semaine. Touchez « Choisir des plats » et sélectionnez-en ${MAX}.</p>`;
+  else{
+    h+=wk.map(s=>{ const p=platDe(s.id); if(!p) return "";
+      return `<div class="planrow"><div class="top2"><span class="grow">${esc(p.nom)}${tagsHtml(p)}</span></div>
+      <div class="acts"><div class="mini" aria-label="${p.lot?"Fournées":"Portions"}"><span>${p.lot?"Fournées":"Portions"}</span><button data-pm="${s.id}" data-d="-1" aria-label="Une de moins">−</button><b>${s.p}</b><button data-pm="${s.id}" data-d="1" aria-label="Une de plus">+</button>${p.lot?`<span class="rsub">(${p.lot*s.p} ${p.unite||"parts"})</span>`:""}</div>
+      <button class="btn" data-cpj="${s.id}">Copier pour Jow</button><button class="x" data-rm="${s.id}">Retirer</button></div></div>`; }).join("");
+    const items=agreger(k);
+    h+=`<h2 class="cat">Liste de courses</h2><ul class="shop">${items.map(i=>{ const ck=k+"|"+i.k; return `<li><label><input type="checkbox" data-k="${esc(ck)}" ${D.reg.coche[ck]?"checked":""}><span>${esc(i.t)}</span></label></li>`; }).join("")}</ul>
+      <div class="actions"><button class="btn main" id="cpListe">Copier la liste</button></div>`;
+  }
+  h+=htmlPlacard();
+  const H=historique();
+  h+=`<h2 class="cat">Mon historique</h2>`;
+  if(!H.cles.length) h+=`<p class="empty">Vos semaines apparaîtront ici au fur et à mesure.</p>`;
+  else{
+    h+=`<div class="stats"><div class="stat"><b>${H.nbDiff}</b><span>plats différents sur ${H.nbMois} semaine${H.nbMois>1?"s":""}</span></div></div>`;
+    if(H.souvent.length) h+=`<div class="note">Choisis souvent ces dernières semaines : ${H.souvent.map(([id,c])=>`${esc((platDe(id)||{nom:"plat supprimé"}).nom)} (${c} fois)`).join(", ")}. Pensez à alterner.</div>`;
+    const tm=Object.entries(H.themesMois).sort((a,b)=>b[1]-a[1]);
+    if(tm.length) h+=`<p class="intro">Thématiques du mois : ${tm.map(([t,c])=>`${esc(t)} (${c})`).join(", ")}.</p>`;
+    if(H.idees.length) h+=`<h3 style="margin:14px 0 8px">Idées pour varier</h3><div class="opts">${H.idees.map(p=>`<div class="optrow"><div class="opt" style="cursor:default"><span class="grow">${esc(p.nom)}<small>${themesDe(p).join(", ")}</small></span></div><button class="btn" data-addidee="${p.id}">Ajouter</button></div>`).join("")}</div>`;
+    h+=`<h3 style="margin:18px 0 8px">Semaines passées</h3>`+H.cles.slice(0,12).map(c=>`<div class="wk"><b>${libSemaine(c)}</b><span>${D.semaines[c].map(s=>esc((platDe(s.id)||{nom:"plat supprimé"}).nom)).join(", ")}</span></div>`).join("");
+  }
+  $("#semaine").innerHTML=h;
+}
+
+/* Import d’une recette */
+function nombre(s){
+  s=s.trim().replace(",",".").replace("½",".5").replace("¼",".25").replace("¾",".75");
+  const f=s.match(/^(\d+)\s*\/\s*(\d+)$/); if(f) return +f[1]/+f[2];
+  const m=s.match(/^(\d+)?\s*(\.\d+)?$/); if(m) return (+(m[1]||0))+(+(m[2]||0));
+  const v=parseFloat(s); return isNaN(v)?null:v;
+}
+const UNITES=[[/^kg$/i,"g",1000],[/^(g|gr|grammes?)$/i,"g",1],[/^cl$/i,"ml",10],[/^ml$/i,"ml",1],[/^(l|litres?)$/i,"ml",1000],
+ [/^(c\.\s?à\s?s\.?|c\.à\.s\.?|cs|càs|cuill[eè]res?\s+à\s+soupe)$/i,"c. à s.",1],[/^(c\.\s?à\s?c\.?|c\.à\.c\.?|cc|càc|cuill[eè]res?\s+à\s+caf[ée])$/i,"c. à c.",1],
+ [/^pinc[ée]es?$/i,"pincée(s)",1],[/^tranches?$/i,"tranche(s)",1]];
+function lireIngredient(line){
+  let l=line.replace(/^[\s\-•*–]+/,"").trim(); if(!l) return null;
+  const m=l.match(/^([\d.,½¼¾\/ ]*\d[\d.,½¼¾\/]*|[½¼¾])\s*(.*)$/);
+  if(!m) return [null,"",l];
+  let q=nombre(m[1]), rest=m[2].trim(), u="";
+  const um=rest.match(/^(kg|g|gr|grammes?|cl|ml|l|litres?|c\.\s?à\s?s\.?|c\.\s?à\s?c\.?|c\.à\.s\.?|c\.à\.c\.?|cs|cc|càs|càc|cuill[eè]res?\s+à\s+soupe|cuill[eè]res?\s+à\s+caf[ée]|pinc[ée]es?|tranches?)(?=\s|$)\s*(.*)$/i);
+  if(um){ for(const [re,nu,f] of UNITES) if(re.test(um[1].trim())){ u=nu; if(q!=null) q*=f; break; } rest=um[2]; }
+  rest=rest.replace(/^(de\s+|d[’'])/i,"").trim();
+  return [q,u,rest||l];
+}
+function lireTexte(t){
+  const lignes=t.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+  const r={nom:"",min:"",base:"",ing:[],et:[]};
+  const pm=t.match(/pour\s+(\d+)\s*(personnes?|portions?|pers)/i); if(pm) r.base=pm[1];
+  const mm=t.match(/(\d+)\s*min/i); if(mm) r.min=mm[1];
+  let iI=lignes.findIndex(x=>/^ingr[ée]dients?/i.test(x)), iP=lignes.findIndex(x=>/^(pr[ée]paration|[ée]tapes|instructions|recette)\b/i.test(x));
+  if(iI>0 || iI===-1) r.nom=lignes[0];
+  if(iI>=0){
+    const fin=iP>iI?iP:lignes.length;
+    r.ing=lignes.slice(iI+1,fin);
+    if(iP>iI) r.et=lignes.slice(iP+1);
+  }else{
+    lignes.slice(1).forEach(x=>{ if(/^[\-•*]?\s*[\d½¼¾]/.test(x) && !/^\d+[.)]\s/.test(x)) r.ing.push(x); else r.et.push(x); });
+  }
+  r.ing=r.ing.filter(x=>!/^pour\s+\d+/i.test(x));
+  r.et=r.et.map(x=>x.replace(/^(\d+[.)]|étape\s*\d+\s*:?)\s*/i,"")).filter(Boolean);
+  return r;
+}
+let imp=null;
+function ouvrirImport(id){
+  const p=id?D.recettes.find(r=>r.id===id):null;
+  imp={id:p?p.id:null, themes:p?[...(p.themes||[])]:[]};
+  $("#ibody").innerHTML=`<h2 id="ititle">${p?"Modifier la recette":"Importer une recette"}</h2>
+   ${p?"":`<div class="field"><label for="ipaste">Coller une recette (Jow, site, notes…)</label><textarea id="ipaste" placeholder="Collez ici le titre, les ingrédients et la préparation"></textarea><div><button class="btn" id="iparse">Remplir automatiquement</button></div></div>`}
+   <div class="field"><label for="inom">Nom du plat</label><input type="text" id="inom" value="${p?esc(p.nom):""}"></div>
+   <div class="grid2"><div class="field"><label for="imin">Temps (min)</label><input type="text" inputmode="numeric" id="imin" value="${p&&p.min?p.min:""}"></div>
+   <div class="field"><label for="ibase">Portions de la recette</label><input type="text" inputmode="numeric" id="ibase" value="${p?1:""}" placeholder="ex. 4"></div></div>
+   <div class="field"><label>Thématiques</label><div class="chips" id="ithemes" style="margin:0"></div><input type="text" id="itheme" placeholder="Nouvelle thématique (ex. Mexicain)"></div>
+   <div class="field"><label for="iing">Ingrédients, un par ligne</label><textarea id="iing" style="min-height:130px" placeholder="200 g tofu ferme&#10;1 c. à s. Maïzena&#10;2 c. à s. huile d’olive">${p?esc(p.ing.map(i=>ligne(i,1)).join("\n")):""}</textarea></div>
+   <div id="icheck"></div>
+   <div class="field"><label for="iet">Préparation, une étape par ligne</label><textarea id="iet" style="min-height:110px">${p?esc((p.et||[]).join("\n")):""}</textarea></div>
+   <p class="err" id="ierr" role="alert" hidden></p>`;
+  renderIThemes(); renderICheck(); $("#idlg").showModal();
+}
+function renderIThemes(){ $("#ithemes").innerHTML=themesDispo().filter(t=>t!=="Express").map(t=>`<button class="chip" aria-pressed="${imp.themes.includes(t)}" data-ith="${esc(t)}">${esc(t)}</button>`).join(""); }
+function renderICheck(){
+  const l=$("#iing").value.split("\n").map(lireIngredient).filter(Boolean);
+  $("#icheck").innerHTML = l.length ? `<h3 style="margin:12px 0 0">Vérification FODMAP</h3>`+htmlAlertes(l.map(i=>({n:i[2],s:verifier(i[2])})).filter(x=>x.s)) : "";
+}
+function enregistrerImport(){
+  const nom=$("#inom").value.trim(), base=Math.max(1, nombre($("#ibase").value||"1")||1);
+  const ing=$("#iing").value.split("\n").map(lireIngredient).filter(Boolean);
+  const err=m=>{ const e=$("#ierr"); e.textContent=m; e.hidden=false; };
+  if(!nom) return err("Indiquez le nom du plat.");
+  if(!ing.length) return err("Ajoutez au moins un ingrédient.");
+  const nt=$("#itheme").value.trim(); const themes=[...imp.themes]; if(nt && !themes.includes(nt)) themes.push(nt);
+  const r={id:imp.id||"perso-"+uidGen(), perso:true, nom, min:parseInt($("#imin").value,10)||null, themes,
+    ing:ing.map(([q,u,n])=>[q==null?null:q/base,u,n]), et:$("#iet").value.split("\n").map(x=>x.trim()).filter(Boolean)};
+  const i=D.recettes.findIndex(x=>x.id===r.id); if(i>=0) D.recettes[i]=r; else D.recettes.push(r);
+  persist("recettes"); $("#idlg").close(); ui.theme="Mes recettes"; renderCats(); renderPlats(); toast(imp.id?"Recette modifiée":"Recette importée");
+}
+
+/* ---------- Journal ---------- */
+function libelleJour(d){ return new Date(d+"T12:00").toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"}); }
+function texteEntree(e){
+  if(e.t==="repas") return e.label;
+  if(e.t==="aliment") return e.items.join(", ");
+  if(e.t==="traitement") return e.label;
+  if(e.t==="symptome") return `${e.syms.join(", ")} (${SEV[e.sev]})`;
+  if(e.t==="selles"){ const f=[e.urg?"urgentes":"",e.dlr?"douloureuses":""].filter(Boolean).join(", "); return `Selles : type ${e.bristol}${f?" ("+f+")":""}`; }
+  return "";
+}
+const sellesAnormales = e => e.t==="selles" && (e.bristol<=2 || e.bristol>=6 || e.urg || e.dlr);
+function renderQuick(){
+  const avec=(D.jmeta[ui.day]||{}).type==="fodmap";
+  $("#quick").innerHTML = TYPES.filter(([k])=>!avec || !["repas","aliment"].includes(k)).map(([k,l])=>`<button data-quick="${k}"><span aria-hidden="true">${ICON[k]}</span>${l}</button>`).join("");
+}
+function renderJournal(){
+  const d=ui.day, ents=(D.jours[d]||[]).slice().sort(parH), jt=(D.jmeta[d]||{}).type;
+  $("#jtype").innerHTML=`<button class="chip" aria-pressed="${jt==="pauvre"}" data-jt="pauvre">Journée pauvre en FODMAP</button><button class="chip" aria-pressed="${jt==="fodmap"}" data-jt="fodmap">Journée avec FODMAP</button>`+
+    (jt==="fodmap"?`<p class="intro" style="width:100%;margin:6px 0 0">Repas non suivis ce jour-là : notez seulement vos traitements, vos symptômes et vos selles. Ce jour ne compte pas dans l’analyse des aliments.</p>`:"");
+  renderQuick();
+  $("#jdate").value=d; $("#jlabel").textContent=libelleJour(d);
+  const parHeure={}; ents.forEach(e=>{ const h=parseInt(e.h,10); (parHeure[h]=parHeure[h]||[]).push(e); });
+  let html="";
+  for(let h=0;h<24;h++){
+    const l=parHeure[h]||[];
+    if(h<6 && !ui.nuit && !l.length) continue;
+    html+=`<div class="hour ${l.length?"has":""}"><div class="hl">${h} h</div><div class="hents">`+
+      l.map(e=>`<div class="ent t-${e.t} ${sellesAnormales(e)?"bad":""}"><span aria-hidden="true">${ICON[e.t]}</span><span class="et"><b>${e.h.replace(":"," h ")}</b>${esc(texteEntree(e))}${e.note?`<span class="en">${esc(e.note)}</span>`:""}</span><button class="edel" data-edel="${e.id}" aria-label="Supprimer cette ligne">×</button></div>`).join("")+
+      `</div><button class="hadd" data-hadd="${h}" aria-label="Ajouter à ${h} h">+</button></div>`;
+  }
+  $("#timeline").innerHTML=html;
+  $("#jbanner").innerHTML=htmlBanniere(ui.day);
+  $("#nuit").textContent = ui.nuit ? "Masquer la nuit (0 h à 5 h)" : "Afficher la nuit (0 h à 5 h)";
+}
+
+/* ---------- Fenêtre d’ajout ---------- */
+let dl=null;
+function heureDefaut(h){
+  if(h!==undefined) return pad(h)+":00";
+  if(ui.day===aujourdhui()){ const n=new Date(); return pad(n.getHours())+":"+pad(Math.floor(n.getMinutes()/5)*5); }
+  return "12:00";
+}
+function ouvrir(type,h){
+  dl={type, h:heureDefaut(h), rep:null, al:[], tr:null, sym:[], sev:2, br:null, urg:false, dlr:false, note:"", q:"", save:false, saveName:"", trNom:"", trDose:"", err:""};
+  renderDlg(); $("#dlg").showModal();
+}
+function optRecette(r,tag){ return `<button class="opt" aria-pressed="${dl.rep===tag}" data-rep="${tag}"><span class="grow">${esc(r.nom)}<small>${esc(themesDe(r).join(", "))}</small></span></button>`; }
+function resultatsAliments(){
+  const q=dl.q.trim().toLowerCase();
+  if(!q) return `<p class="empty" style="padding:4px 0">Tapez le début d’un aliment pour le trouver.</p>`;
+  const l=TOUS_ALIMENTS.filter(a=>a[0].toLowerCase().includes(q)).slice(0,25);
+  const exact=l.some(a=>a[0].toLowerCase()===q);
+  return `<div class="opts">`+l.map(a=>`<button class="opt" aria-pressed="${dl.al.includes(a[0])}" data-al="${esc(a[0])}"><span class="dot ${a[1]}" role="img" aria-label="${LIB[a[1]]}"></span><span class="grow">${a[0]}</span></button>`).join("")+
+    (exact?"":`<button class="opt" data-al="${esc(dl.q.trim())}"><span class="grow">Ajouter « ${esc(dl.q.trim())} »</span></button>`)+`</div>`;
+}
+function renderDlg(){
+  const t=dl.type; let p="";
+  p+=`<h2 id="dtitle">Ajouter au journal</h2><div class="chips" style="margin-bottom:8px">`+TYPES.map(([k,l])=>`<button class="chip" aria-pressed="${k===t}" data-type="${k}">${ICON[k]} ${l}</button>`).join("")+`</div>`;
+  p+=`<div class="row"><label for="dh">Heure</label><input type="time" id="dh" value="${dl.h}"></div>`;
+  if(t==="repas"){
+    const semIds=semaine(lundiDe(ui.day)).map(s=>s.id), sem=semIds.map(platDe).filter(Boolean);
+    p+=`<h3>Plats de la semaine</h3>`+(sem.length?`<div class="opts">${sem.map(r=>optRecette(r,"r:"+r.id)).join("")}</div>`:`<p class="empty" style="padding:0">Aucun plat choisi pour cette semaine : choisissez-les dans l’onglet Plats.</p>`);
+    if(D.reg.repasPerso.length) p+=`<h3>Mes repas enregistrés</h3><div class="opts">`+D.reg.repasPerso.map(m=>`<div class="optrow"><button class="opt" aria-pressed="${dl.rep==="p:"+m.id}" data-rep="p:${m.id}"><span class="grow">${esc(m.nom)}<small>${esc(m.items.join(", "))}</small></span></button><button class="x" data-delp="${m.id}" aria-label="Supprimer le repas ${esc(m.nom)}">×</button></div>`).join("")+`</div>`;
+    const autres=tousPlats().filter(r=>!semIds.includes(r.id));
+    p+=`<h3>Autres plats</h3><div class="opts scroll">${autres.map(r=>optRecette(r,"r:"+r.id)).join("")}</div>`;
+    p+=`<p class="intro" style="margin-top:10px">Un repas qui n’est pas dans la liste ? Choisissez « Aliment » pour le composer et l’enregistrer.</p>`;
+  }
+  if(t==="aliment"){
+    p+=`<h3>Ce que vous avez mangé ou bu</h3><input type="search" id="dq" value="${esc(dl.q)}" placeholder="Chercher un aliment" aria-label="Chercher un aliment" style="width:100%">
+      <div id="dres" style="margin-top:8px">${resultatsAliments()}</div>
+      <h3>Sélection</h3><div class="chips" id="dsel">${dl.al.length?dl.al.map(a=>`<button class="chip" aria-pressed="true" data-alrm="${esc(a)}" aria-label="Retirer ${esc(a)}">${esc(a)} ×</button>`).join(""):`<span class="empty" style="padding:0">Rien de sélectionné.</span>`}</div>
+      <label class="check"><input type="checkbox" id="dsave1" ${dl.save?"checked":""}> Enregistrer ce repas pour le retrouver plus tard</label>
+      <div class="row"><input type="text" id="dsname" value="${esc(dl.saveName)}" placeholder="Nom du repas (ex. Goûter habituel)" aria-label="Nom du repas" style="flex:1"></div>`;
+  }
+  if(t==="traitement"){
+    p+=`<h3>Mes traitements</h3>`+(D.reg.traitements.length?`<div class="opts">`+D.reg.traitements.map(m=>`<div class="optrow"><button class="opt" aria-pressed="${dl.tr===m.id}" data-tr="${m.id}"><span class="grow">${esc(m.nom)}${m.dose?`<small>${esc(m.dose)}</small>`:""}</span></button><button class="x" data-deltr="${m.id}" aria-label="Supprimer ${esc(m.nom)}">×</button></div>`).join("")+`</div>`:`<p class="empty" style="padding:0">Aucun traitement enregistré pour l’instant.</p>`);
+    p+=`<h3>Enregistrer un nouveau traitement</h3><div class="row"><input type="text" id="dtn" value="${esc(dl.trNom)}" placeholder="Nom" aria-label="Nom du traitement" style="flex:2;min-width:140px"><input type="text" id="dtd" value="${esc(dl.trDose)}" placeholder="Dose (facultatif)" aria-label="Dose" style="flex:1;min-width:110px"><button class="btn" data-addtr="1">Enregistrer</button></div>`;
+  }
+  if(t==="symptome"){
+    p+=`<h3>Symptômes ressentis</h3><div class="chips">`+SYMPTOMES.map(s=>`<button class="chip" aria-pressed="${dl.sym.includes(s)}" data-sym="${esc(s)}">${s}</button>`).join("")+`</div>
+      <h3>Intensité</h3><div class="chips">`+[1,2,3].map(n=>`<button class="chip" aria-pressed="${dl.sev===n}" data-sev="${n}">${SEV[n].charAt(0).toUpperCase()+SEV[n].slice(1)}</button>`).join("")+`</div>`;
+  }
+  if(t==="selles"){
+    p+=`<h3>Aspect (échelle de Bristol)</h3><div class="opts">`+BRISTOL.map(([n,txt])=>`<button class="opt" aria-pressed="${dl.br===n}" data-br="${n}"><b>Type ${n}</b><span class="grow">${txt}</span></button>`).join("")+`</div>
+      <div class="chips" style="margin-top:12px"><button class="chip" aria-pressed="${dl.urg}" data-flag="urg">Urgentes</button><button class="chip" aria-pressed="${dl.dlr}" data-flag="dlr">Douloureuses</button></div>`;
+  }
+  p+=`<h3><label for="dnote">Remarque (facultatif)</label></h3><textarea id="dnote" placeholder="Quantité, contexte, stress…">${esc(dl.note)}</textarea>`;
+  if(dl.err) p+=`<p class="err" role="alert">${dl.err}</p>`;
+  $("#dbody").innerHTML=p;
+}
+function enregistrerEntree(){
+  const e={id:uidGen(), h:dl.h||"12:00", t:dl.type, note:dl.note.trim()};
+  let regChange=false;
+  if(dl.type==="repas"){
+    if(!dl.rep){ dl.err="Choisissez un repas dans la liste."; return renderDlg(); }
+    const [k,id]=dl.rep.split(":");
+    if(k==="r"){ const r=platDe(id); e.label=r.nom; e.items=itemsRecette(r); e.rid=id; }
+    else{ const m=D.reg.repasPerso.find(x=>x.id===id); e.label=m.nom; e.items=m.items.slice(); }
+  }
+  if(dl.type==="aliment"){
+    if(!dl.al.length){ dl.err="Sélectionnez au moins un aliment."; return renderDlg(); }
+    e.items=dl.al.slice();
+    if(dl.save){
+      const nom=dl.saveName.trim(); if(!nom){ dl.err="Donnez un nom au repas pour l’enregistrer."; return renderDlg(); }
+      D.reg.repasPerso.push({id:uidGen(), nom, items:dl.al.slice()}); regChange=true;
+      e.t="repas"; e.label=nom;
+    }
+  }
+  if(dl.type==="traitement"){
+    const m=D.reg.traitements.find(x=>x.id===dl.tr);
+    if(!m){ dl.err="Choisissez un traitement, ou enregistrez-en un nouveau."; return renderDlg(); }
+    e.label=m.nom+(m.dose?" ("+m.dose+")":""); e.items=["Traitement : "+m.nom];
+  }
+  if(dl.type==="symptome"){
+    if(!dl.sym.length){ dl.err="Sélectionnez au moins un symptôme."; return renderDlg(); }
+    e.syms=dl.sym.slice(); e.sev=dl.sev;
+  }
+  if(dl.type==="selles"){
+    if(!dl.br){ dl.err="Choisissez le type de selles."; return renderDlg(); }
+    e.bristol=dl.br; e.urg=dl.urg; e.dlr=dl.dlr;
+  }
+  (D.jours[ui.day]=D.jours[ui.day]||[]).push(e);
+  persist("j-"+ui.day); if(regChange) persist("reglages");
+  $("#dlg").close(); renderJournal(); toast("Ajouté au journal");
+}
+
+/* ---------- Analyse ---------- */
+function evenements(){
+  const expo=[], sym=[];
+  for(const [d,arr] of Object.entries(D.jours)) for(const e of arr){
+    const ts=new Date(d+"T"+e.h).getTime(); if(isNaN(ts)) continue;
+    if(e.items && (e.t==="repas"||e.t==="aliment"||e.t==="traitement")) expo.push({ts,items:e.items});
+    if(e.t==="symptome"||sellesAnormales(e)) sym.push({ts,e});
+  }
+  return {expo,sym};
+}
+function analyser(){
+  const {expo,sym}=evenements(), w=ui.win*3600e3;
+  const suivi = ts => sym.some(s=>s.ts>ts && s.ts<=ts+w);
+  let touches=0; const stats=new Map();
+  for(const x of expo){
+    const hit=suivi(x.ts); if(hit) touches++;
+    for(const it of new Set(x.items)){ const o=stats.get(it)||{n:0,hit:0}; o.n++; if(hit) o.hit++; stats.set(it,o); }
+  }
+  const base = expo.length ? touches/expo.length : 0;
+  const l=[...stats.entries()].map(([nom,o])=>({nom,...o,rate:o.hit/o.n}));
+  const assez=l.filter(x=>x.n>=3).sort((a,b)=>b.rate-a.rate||b.n-a.n);
+  const pistes=assez.filter(x=>x.rate>=0.5 && x.rate>=base+0.2);
+  const surv=assez.filter(x=>!pistes.includes(x) && x.rate>base+0.05 && x.hit>=2);
+  const bons=assez.filter(x=>x.rate<=Math.min(0.2, base*0.6) || x.hit===0).sort((a,b)=>a.rate-b.rate||b.n-a.n);
+  const peu=l.filter(x=>x.n<3).sort((a,b)=>b.hit-a.hit||a.nom.localeCompare(b.nom,"fr"));
+  const jours=Object.values(D.jours).filter(a=>a.length).length;
+  const compteSym={}; sym.forEach(s=>{ if(s.e.t==="symptome") s.e.syms.forEach(n=>compteSym[n]=(compteSym[n]||0)+1); else compteSym["Selles anormales"]=(compteSym["Selles anormales"]||0)+1; });
+  return {base,pistes,surv,bons,peu,jours,nbExpo:expo.length,nbSym:sym.length,compteSym};
+}
+function ligneRes(x,good){
+  const st=statutDe(x.nom.replace(/^Traitement : /,"")); const pct=Math.round(x.rate*100);
+  return `<li><div class="rhead">${st?`<span class="dot ${st}" role="img" aria-label="${LIB[st]}"></span>`:""}<span class="grow">${esc(x.nom)}</span><span class="pct">${pct} %</span></div>
+    <div class="meter ${good?"good":""}"><i style="width:${good?100-pct:pct}%"></i></div>
+    <div class="rsub">Suivi de symptômes ${x.hit} fois sur ${x.n}</div></li>`;
+}
+function comparer(){
+  const jours=new Set([...Object.keys(D.jours), ...Object.keys(D.jmeta).filter(d=>D.jmeta[d].type)]);
+  const G=new Map();
+  for(const d of jours){
+    const arr=D.jours[d]||[], type=(D.jmeta[d]||{}).type;
+    if(!type && !arr.some(e=>e.t==="selles"||e.t==="symptome"||e.t==="traitement")) continue;
+    const tLib = type==="fodmap" ? "Avec FODMAP" : "Pauvre en FODMAP";
+    const trs=[...new Set(arr.filter(e=>e.t==="traitement").map(e=>((e.items&&e.items[0])||e.label||"").replace(/^Traitement : /,"")))].sort();
+    const tr=trs.length?trs.join(" + "):"Sans traitement", key=tLib+"|"+tr;
+    const g=G.get(key)||{type:tLib, tr, j:0, selles:0, anorm:0, brSum:0, sym:0};
+    g.j++;
+    arr.forEach(e=>{ if(e.t==="selles"){ g.selles++; g.brSum+=e.bristol; if(sellesAnormales(e)) g.anorm++; } if(e.t==="symptome") g.sym++; });
+    G.set(key,g);
+  }
+  return [...G.values()].sort((a,b)=>b.type.localeCompare(a.type)||a.tr.localeCompare(b.tr,"fr"));
+}
+const virg = (x,n=1) => x.toFixed(n).replace(".",",");
+function chiffresGroupe(g){
+  return {sj:virg(g.selles/g.j), br:g.selles?virg(g.brSum/g.selles):"–", an:g.selles?Math.round(100*g.anorm/g.selles)+" %":"–", sy:virg(g.sym/g.j)};
+}
+function htmlComparaison(){
+  const C=comparer();
+  let h=`<h2 class="cat">Comparer mes journées et traitements</h2>
+   <p class="intro">Chaque ligne regroupe les jours selon le type de journée et les traitements pris ce jour-là. Les jours non indiqués comptent comme pauvres en FODMAP.</p>`;
+  if(!C.length) return h+`<p class="empty">Notez vos selles, vos symptômes et vos traitements, et indiquez les journées avec FODMAP dans le Journal : la comparaison apparaîtra ici.</p>`;
+  h+=`<div style="overflow-x:auto"><table class="cmp"><thead><tr><th>Journées</th><th>Jours</th><th>Selles par jour</th><th>Bristol moyen</th><th>Selles anormales</th><th>Symptômes par jour</th></tr></thead><tbody>`+
+    C.map(g=>{ const c=chiffresGroupe(g); return `<tr><td><b>${esc(g.type)}</b><br><small>${esc(g.tr)}</small></td><td>${g.j}</td><td>${c.sj}</td><td>${c.br}</td><td>${c.an}</td><td>${c.sy}</td></tr>`; }).join("")+`</tbody></table></div>
+    <p class="intro" style="margin-top:10px">Bristol : le type 4 est l’idéal, en dessous de 3 les selles tendent vers la constipation, au-dessus de 5 elles sont molles. ${C.some(g=>g.j<3)?"Les groupes de moins de 3 jours sont encore peu fiables : visez au moins 7 jours par groupe.":""}</p>`;
+  return h;
+}
+function texteComparaison(){
+  const C=comparer(); if(!C.length) return [];
+  return ["", "Comparaison des journées et traitements :", ...C.map(g=>{ const c=chiffresGroupe(g); return `- ${g.type}, ${g.tr} : ${g.j} jour(s), ${c.sj} selle(s) par jour, Bristol moyen ${c.br}, selles anormales ${c.an}, ${c.sy} symptôme(s) par jour`; })];
+}
+function renderAnalyse(){
+  const A=analyser();
+  let h=`<p class="intro">L’appli repère les aliments et traitements souvent suivis de symptômes ou de selles anormales dans les heures qui suivent, en les comparant à votre moyenne. Ce sont des pistes à vérifier, pas un diagnostic.</p>
+   <div class="row"><label for="win">Délai observé après un repas</label><select id="win">${[2,4,8,12,24].map(n=>`<option value="${n}" ${n===ui.win?"selected":""}>${n} heures</option>`).join("")}</select></div>
+   <div class="stats"><div class="stat"><b>${A.jours}</b><span>jours notés</span></div><div class="stat"><b>${A.nbExpo}</b><span>prises notées</span></div><div class="stat"><b>${A.nbSym}</b><span>symptômes ou selles anormales</span></div><div class="stat"><b>${Math.round(A.base*100)} %</b><span>des prises suivies de symptômes</span></div></div>`;
+  if(A.nbExpo===0){ $("#analyse").innerHTML=h+htmlComparaison()+`<h2 class="cat">Aliments</h2><p class="empty">Aucun repas noté pour l’instant. Notez vos repas, symptômes et selles pendant au moins 7 à 10 jours : l’analyse des aliments apparaîtra ici.</p>`; return; }
+  if(A.jours<7) h+=`<div class="note">Avec ${A.jours} jour${A.jours>1?"s":""} noté${A.jours>1?"s":""}, les résultats sont encore fragiles. Visez au moins 7 à 10 jours.</div>`;
+  h+=`<h2 class="cat">Pistes à vérifier</h2>`+(A.pistes.length?`<ul class="res">${A.pistes.map(x=>ligneRes(x)).join("")}</ul><p class="intro">Souvent suivis de symptômes, nettement plus que votre moyenne. Un aliment présent dans les mêmes repas peut aussi ressortir : regardez ce qu’ils ont en commun.</p>`:`<p class="empty">Aucun aliment ne se détache pour l’instant.</p>`);
+  if(A.surv.length) h+=`<h2 class="cat">À surveiller</h2><ul class="res">${A.surv.map(x=>ligneRes(x)).join("")}</ul>`;
+  if(A.bons.length) h+=`<h2 class="cat">Plutôt bien tolérés</h2><ul class="res">${A.bons.map(x=>ligneRes(x,true)).join("")}</ul>`;
+  if(A.peu.length) h+=`<details class="more"><summary>Pas encore assez de données (${A.peu.length})</summary><p class="intro">Moins de 3 prises notées : continuez à les noter.</p><ul class="res">${A.peu.map(x=>`<li><div class="rhead"><span class="grow">${esc(x.nom)}</span><span class="rsub">${x.hit} sur ${x.n}</span></div></li>`).join("")}</ul></details>`;
+  const cs=Object.entries(A.compteSym).sort((a,b)=>b[1]-a[1]);
+  if(cs.length) h+=`<h2 class="cat">Symptômes les plus fréquents</h2><ul class="res">${cs.map(([n,c])=>`<li><div class="rhead"><span class="grow">${esc(n)}</span><span class="pct">${c}</span></div></li>`).join("")}</ul>`;
+  h+=htmlComparaison();
+  h+=`<div class="actions"><button class="btn main" id="cpResume">Copier le résumé pour le médecin</button></div>
+   <p class="intro" style="margin-top:12px">Un symptôme peut avoir d’autres causes : stress, sommeil, quantités, cycle. Montrez ces résultats à votre médecin ou diététicien(ne) avant de supprimer un aliment durablement.</p>`;
+  $("#analyse").innerHTML=h;
+}
+function resume(){
+  const A=analyser(); const L=[];
+  L.push("Journal alimentaire pauvre en FODMAP : résumé");
+  L.push(`${A.jours} jours notés, ${A.nbExpo} prises, ${A.nbSym} épisodes de symptômes ou selles anormales. Délai observé : ${ui.win} h.`);
+  L.push("", "Pistes à vérifier :"); L.push(...(A.pistes.length?A.pistes.map(x=>`- ${x.nom} : ${x.hit}/${x.n}`):["- aucune pour l’instant"]));
+  if(A.surv.length){ L.push("", "À surveiller :"); L.push(...A.surv.map(x=>`- ${x.nom} : ${x.hit}/${x.n}`)); }
+  if(A.bons.length){ L.push("", "Plutôt bien tolérés :"); L.push(...A.bons.map(x=>`- ${x.nom} : ${x.hit}/${x.n}`)); }
+  L.push(...texteComparaison());
+  L.push("", "Détail des 14 derniers jours :");
+  Object.keys(D.jours).filter(d=>D.jours[d].length).sort().slice(-14).forEach(d=>{
+    L.push("", libelleJour(d)+((D.jmeta[d]||{}).type==="fodmap"?" (journée avec FODMAP)":"")+" :");
+    D.jours[d].slice().sort(parH).forEach(e=>L.push(`${e.h}  ${texteEntree(e)}${e.note?" ("+e.note+")":""}`));
+  });
+  return L.join("\n");
+}
+
+/* ---------- Réintroduction ---------- */
+const FAMILLES = {
+ sorbitol:{nom:"Sorbitol",desc:"Un polyol présent dans l’avocat, les mûres, certains fruits à noyau et les édulcorants en -ol.",
+  aliments:[{nom:"Avocat",doses:["¼ d’avocat (40 g)","⅓ d’avocat (55 g)","½ avocat (80 g)"]},{nom:"Mûres",doses:["10 mûres (50 g)","15 mûres (75 g)","20 mûres (100 g)"]}],
+  repas:[["salade-riz-thon","Salade de riz méditerranéenne au thon, avec l’avocat en dés"],["tacos-tofu","Tacos de maïs au tofu croustillant, avec l’avocat écrasé"],[null,"Tartine au levain et avocat, au petit-déjeuner"]]},
+ mannitol:{nom:"Mannitol",desc:"Un polyol présent dans les champignons de Paris, le chou-fleur et la patate douce.",
+  aliments:[{nom:"Champignons de Paris",doses:["40 g (2 champignons)","75 g (4 champignons)","110 g (6 champignons)"]},{nom:"Chou-fleur",doses:["40 g","75 g","110 g"]}],
+  repas:[["risotto-poivron","Risotto crémeux au poivron, avec les champignons poêlés"],["omelette","Omelette ciboulette et comté, avec les champignons"],["poulet-paprika","Poulet crémeux au paprika, avec les champignons"]]},
+ lactose:{nom:"Lactose",desc:"Le sucre du lait : lait, yaourts et fromages frais classiques.",
+  aliments:[{nom:"Lait de vache classique",doses:["60 ml","125 ml","250 ml"]},{nom:"Yaourt classique",doses:["60 g (½ pot)","125 g (1 pot)","190 g (1 pot ½)"]}],
+  repas:[["porridge","Porridge préparé au lait classique"],["yaourt","Yaourt classique, fraises et noix"],["polenta","Polenta crémeuse préparée au lait classique"]]},
+ fructose:{nom:"Fructose",desc:"Le fructose en excès : miel, mangue, pomme, sirop d’agave.",
+  aliments:[{nom:"Miel",doses:["1 c. à c.","1 c. à c. ½","2 c. à c."]},{nom:"Mangue",doses:["40 g","70 g","100 g"]}],
+  repas:[["yaourt","Yaourt sans lactose et fraises, sucré au miel"],["porridge","Porridge au miel à la place du sirop d’érable"],["bowl-cacahuete","Bowl tofu croustillant, avec la mangue en dés"]]},
+ gos:{nom:"GOS (légumineuses)",desc:"Des fibres présentes dans les pois chiches, les lentilles et les haricots secs.",
+  aliments:[{nom:"Pois chiches en conserve",doses:["70 g égouttés","100 g égouttés","130 g égouttés"]},{nom:"Lentilles en conserve",doses:["70 g égouttées","100 g égouttées","130 g égouttées"]}],
+  repas:[["curry-tofu","Curry crémeux de tofu, avec les pois chiches ajoutés"],["salade-grecque","Salade grecque au quinoa, avec les pois chiches"],["salade-lentilles","Salade de lentilles, carotte, feta et noix, avec la dose test de lentilles"]]},
+ ble:{nom:"Fructanes : blé",desc:"Les fructanes du blé : pain, pâtes et biscuits classiques.",
+  aliments:[{nom:"Pain de blé classique",doses:["1 tranche","2 tranches","3 tranches"]},{nom:"Pâtes de blé classiques",doses:["100 g cuites","150 g cuites","200 g cuites"]}],
+  repas:[["croque","Croque jambon-comté au pain de mie classique"],["carbonara","Carbonara aux pâtes de blé classiques"],["tartines-mozza","Tartines aubergine-mozzarella sur pain de blé classique"]]},
+ ail:{nom:"Fructanes : ail",desc:"L’ail frais, en poudre ou dans les préparations.",
+  aliments:[{nom:"Ail",doses:["¼ de gousse","½ gousse","1 gousse"]}],
+  repas:[["pates-aubergine","Pâtes crémeuses à l’aubergine, avec l’ail frais revenu"],["crevettes-grecque","Crevettes à la grecque, avec l’ail frais"],["souvlaki","Souvlaki de poulet, tzatziki classique à l’ail"]]},
+ oignon:{nom:"Fructanes : oignon",desc:"L’oignon, l’échalote et le blanc de poireau.",
+  aliments:[{nom:"Oignon",doses:["1 c. à s. (15 g)","2 c. à s. (30 g)","¼ d’oignon (50 g)"]}],
+  repas:[["moussaka","Moussaka express, avec l’oignon revenu"],["minestrone","Minestrone, avec l’oignon revenu"],["salade-grecque","Salade grecque au quinoa, avec l’oignon rouge émincé"]]}
+};
+const ORDRE = ["sorbitol","mannitol","lactose","fructose","gos","ble","ail","oignon"];
+const RES = {ok:"Bien toléré", part:"Toléré en petite quantité", non:"Mal toléré"};
+const ajout = (d,n) => { const t=new Date(d+"T12:00"); t.setDate(t.getDate()+n); return cleJour(t); };
+const courtJour = d => new Date(d+"T12:00").toLocaleDateString("fr-FR",{weekday:"short",day:"numeric",month:"short"});
+const testDe = k => (D.reintro.tests[k] = D.reintro.tests[k] || {food:0, meal:0, stop:null, res:null, skip:false});
+
+function planning(){
+  const R=D.reintro; if(!R.start) return null;
+  let d=R.start; const out=[];
+  for(const k of ORDRE){
+    const t=testDe(k);
+    if(t.skip){ out.push({k, skip:true}); continue; }
+    const n=t.stop||3;
+    out.push({k, jours:[...Array(n)].map((_,i)=>ajout(d,i)), pause:[ajout(d,n), ajout(d,n+2)]});
+    d=ajout(d,n+3);
+  }
+  return {tests:out, fin:ajout(d,-1)};
+}
+function etat(p, jour){
+  if(p.skip) return {txt:"Passé", cls:""};
+  if(jour<p.jours[0]) return {txt:"À venir", cls:""};
+  const i=p.jours.indexOf(jour); if(i>=0) return {txt:`En cours, jour ${i+1}`, cls:"cur", i};
+  if(jour<=p.pause[1]) return {txt:"Pause", cls:"cur", pause:true};
+  return {txt:"Terminé", cls:""};
+}
+function symptomesTest(p){
+  const dates=[...p.jours, ajout(p.jours[p.jours.length-1],1)], l=[];
+  dates.forEach(d=>(D.jours[d]||[]).forEach(e=>{ if(e.t==="symptome") l.push(e.syms.join(", ")+" ("+SEV[e.sev]+")"); else if(sellesAnormales(e)) l.push("Selles type "+e.bristol); }));
+  return l;
+}
+function aujourdHuiReintro(jour){
+  const P=planning(); if(!P) return null;
+  for(const p of P.tests){ if(p.skip) continue; const e=etat(p,jour); if(e.i!==undefined || e.pause) return {p,e}; }
+  return null;
+}
+function htmlBanniere(jour){
+  const x=aujourdHuiReintro(jour); if(!x) return "";
+  const F=FAMILLES[x.p.k];
+  if(x.e.pause) return `<div class="note">Réintroduction : pause après le test ${esc(F.nom.toLowerCase())}. Restez en alimentation pauvre en FODMAP.</div>`;
+  const t=testDe(x.p.k), a=F.aliments[t.food]||F.aliments[0];
+  return `<div class="note"><strong>Réintroduction, test ${esc(F.nom.toLowerCase())}, jour ${x.e.i+1}</strong><br>Dose du jour : ${esc(a.doses[x.e.i])} (${esc(a.nom)}).<br>Repas prévu : ${esc(F.repas[t.meal][1])}.<div class="actions" style="margin-top:8px"><button class="btn main" data-rnote="${x.p.k}|${x.e.i}|${jour}">Noter la dose dans le journal</button></div></div>`;
+}
+function noterDose(k,i,jour){
+  const F=FAMILLES[k], t=testDe(k), a=F.aliments[t.food]||F.aliments[0];
+  const h = jour===aujourdhui() ? (()=>{ const n=new Date(); return pad(n.getHours())+":"+pad(Math.floor(n.getMinutes()/5)*5); })() : "12:00";
+  (D.jours[jour]=D.jours[jour]||[]).push({id:uidGen(), h, t:"aliment", items:[a.nom], note:`Réintroduction ${F.nom.toLowerCase()}, jour ${i+1} : ${a.doses[i]}`});
+  persist("j-"+jour); renderJournal(); renderReintro(); toast("Dose notée dans le journal");
+}
+function ajouterSemaine(week,id){
+  const wk=semaine(week).slice();
+  if(wk.some(s=>s.id===id)){ toast("Ce plat est déjà dans la semaine"); return; }
+  if(wk.length>=MAX){ toast(`La semaine compte déjà ${MAX} plats : retirez-en un d’abord`); return; }
+  wk.push({id, p:(platDe(id)||{}).lot?1:D.reg.pers}); D.semaines[week]=wk; persist("semaines"); renderSemaine(); toast("Plat ajouté à la semaine du test");
+}
+function renderReintro(){
+  const R=D.reintro, P=planning(), auj=aujourdhui();
+  let h="";
+  if(!P){
+    h=`<p class="intro">À démarrer quand la phase d’élimination (2 à 6 semaines) a nettement amélioré vos symptômes. Chaque famille de FODMAP est testée seule, sur 3 jours avec une dose croissante, puis suivie de 3 jours de pause en alimentation pauvre en FODMAP. Le programme dure environ 7 semaines.</p>
+     <div class="row"><label for="rstart">Date de début</label><input type="date" id="rstart" value="${auj}"><button class="btn main" id="rgo">Créer mon programme</button></div>
+     <h2 class="cat">Ordre des tests</h2><ul class="res">${ORDRE.map(k=>`<li><div class="rhead"><span class="grow">${FAMILLES[k].nom}</span></div><div class="rsub">${FAMILLES[k].desc}</div></li>`).join("")}</ul>
+     <p class="intro" style="margin-top:12px">Doses indicatives. Faites valider le programme par votre diététicien(ne) ou suivez celui de l’application Monash.</p>`;
+    $("#reintro").innerHTML=h; return;
+  }
+  h+=`<p class="intro">Programme du ${libelleJour(R.start)} au ${libelleJour(P.fin)}. Doses indicatives, à adapter avec votre diététicien(ne).</p>`+htmlBanniere(auj);
+  P.tests.forEach(p=>{
+    const F=FAMILLES[p.k], t=testDe(p.k);
+    if(p.skip){ h+=`<details class="rec"><summary><div class="rt"><h3>${F.nom}</h3><div class="meta">Test passé</div></div><span class="plus" aria-hidden="true">+</span></summary><div class="body"><div class="actions"><button class="btn" data-rskip="${p.k}">Remettre ce test</button></div></div></details>`; return; }
+    const e=etat(p,auj), a=F.aliments[t.food]||F.aliments[0], sy=symptomesTest(p);
+    h+=`<details class="rec" ${e.cls?"open":""}><summary><div class="rt"><h3>${F.nom}</h3><div class="meta">${courtJour(p.jours[0])} au ${courtJour(p.jours[p.jours.length-1])}, pause jusqu’au ${courtJour(p.pause[1])}</div><div class="tags"><span class="${e.cls?"me":""}">${e.txt}</span>${t.res?`<span>${RES[t.res]}</span>`:""}</div></div><span class="plus" aria-hidden="true">+</span></summary><div class="body">
+      <p class="intro" style="margin:12px 0 0">${F.desc}</p>
+      ${F.aliments.length>1?`<h4>Aliment test</h4><div class="chips" style="margin:0">${F.aliments.map((x,i)=>`<button class="chip" aria-pressed="${i===t.food}" data-rfood="${p.k}|${i}">${x.nom}</button>`).join("")}</div>`:""}
+      <h4>Programme</h4><div class="opts">${p.jours.map((d,i)=>`<div class="planrow" style="margin:0"><div class="top2"><span class="grow">Jour ${i+1}, ${courtJour(d)} : ${esc(a.doses[i])}</span></div><div class="acts"><button class="btn" data-rnote="${p.k}|${i}|${d}">Noter dans le journal</button>${t.stop===i+1?`<button class="x" data-rstop="${p.k}|0">Annuler l’arrêt</button>`:(!t.stop?`<button class="x" data-rstop="${p.k}|${i+1}">Symptômes : arrêter ici</button>`:"")}</div></div>`).join("")}
+        <div class="wk" style="margin:0"><b>Pause, ${courtJour(p.pause[0])} au ${courtJour(p.pause[1])}</b><span>Alimentation pauvre en FODMAP, sans aliment test.</span></div></div>
+      <h4>Repas prévu pour le test</h4><div class="opts">${F.repas.map(([pid,txt],i)=>`<button class="opt" aria-pressed="${i===t.meal}" data-rmeal="${p.k}|${i}"><span class="grow">${esc(txt)}</span></button>`).join("")}</div>
+      ${F.repas[t.meal][0]?`<div class="actions"><button class="btn" data-rweek="${p.k}">Ajouter ce plat à la semaine du test</button></div>`:""}
+      <h4>Symptômes notés pendant le test</h4>${sy.length?`<ul class="warn">${sy.map(s=>`<li><span class="dot non"></span>${esc(s)}</li>`).join("")}</ul>`:`<p class="okmsg" style="color:var(--muted)">Aucun pour l’instant.</p>`}
+      <h4>Résultat</h4><div class="chips" style="margin:0">${Object.entries(RES).map(([k2,l])=>`<button class="chip" aria-pressed="${t.res===k2}" data-rres="${p.k}|${k2}">${l}</button>`).join("")}</div>
+      <div class="actions"><button class="x" data-rskip="${p.k}">Passer ce test</button></div>
+    </div></details>`;
+  });
+  const faits=ORDRE.filter(k=>testDe(k).res);
+  h+=`<h2 class="cat">Bilan</h2>`+(faits.length?`<ul class="res">${faits.map(k=>`<li><div class="rhead"><span class="dot ${({ok:"ok",part:"lim",non:"non"})[testDe(k).res]}"></span><span class="grow">${FAMILLES[k].nom}</span><span class="rsub">${RES[testDe(k).res]}</span></div></li>`).join("")}</ul><div class="actions"><button class="btn main" id="rcopy">Copier le bilan</button></div>`:`<p class="empty">Les résultats apparaîtront ici au fil des tests.</p>`);
+  h+=`<div class="actions" style="margin-top:24px"><button class="x" id="rreset">Recommencer le programme</button></div>`;
+  $("#reintro").innerHTML=h;
+}
+function bilanTexte(){
+  return "Réintroduction des FODMAP : bilan\n"+ORDRE.map(k=>{ const t=testDe(k), F=FAMILLES[k]; return `- ${F.nom}, testé avec : ${(F.aliments[t.food]||F.aliments[0]).nom} : ${t.skip?"non testé":(t.res?RES[t.res]:"pas encore de résultat")}${t.stop?`, symptômes au jour ${t.stop}`:""}`; }).join("\n");
+}
+
+/* ---------- Import et export ---------- */
+let DL = null;
+async function initDownloads(){ if(window.claude && typeof window.claude.use==="function"){ try{ DL = await window.claude.use("downloads"); }catch(e){} } renderDonnees(); }
+const TYPES_LIB = {repas:"Repas",aliment:"Aliment",traitement:"Traitement",symptome:"Symptôme",selles:"Selles"};
+function csvJournal(){
+  const q = v => `"${String(v==null?"":v).replace(/"/g,'""')}"`;
+  const L=[["Date","Type de journée","Heure","Type","Détail","Remarque"].map(q).join(";")];
+  Object.keys(D.jours).sort().forEach(d=>D.jours[d].slice().sort(parH).forEach(e=>L.push([d,(D.jmeta[d]||{}).type==="fodmap"?"Avec FODMAP":"Pauvre en FODMAP",e.h,TYPES_LIB[e.t]||e.t,texteEntree(e),e.note||""].map(q).join(";"))));
+  return "\ufeff"+L.join("\r\n");
+}
+const sauvegarde = () => JSON.stringify({type:"fodmap-sauvegarde", version:1, date:aujourdhui(), reg:D.reg, recettes:D.recettes, semaines:D.semaines, jours:D.jours, jmeta:D.jmeta, placard:D.placard, reintro:D.reintro}, null, 1);
+const fichierRecettes = () => JSON.stringify({type:"fodmap-recettes", version:1, recettes:D.recettes}, null, 1);
+async function telecharger(nom, contenu, msg){
+  if(DL){
+    try{ await DL.save({filename:nom, data:contenu}); toast(msg); return; }
+    catch(e){ if(e && e.code==="declined") return; if(e && e.code==="rate_limited"){ toast("Une fenêtre d’enregistrement est déjà ouverte"); return; } }
+  }
+  try{
+    const type = /\.csv$/.test(nom) ? "text/csv" : /\.txt$/.test(nom) ? "text/plain" : "application/json";
+    const url = URL.createObjectURL(new Blob([contenu],{type:type+";charset=utf-8"}));
+    const a = document.createElement("a"); a.href=url; a.download=nom; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 2000); toast(msg);
+  }catch(e){ toast("Export impossible ici : ouvrez le fichier dans votre navigateur"); }
+}
+function nettoyerRecette(r){
+  if(!r || typeof r.nom!=="string" || !Array.isArray(r.ing) || !r.ing.length) return null;
+  let id = typeof r.id==="string" && r.id ? r.id : "perso-"+uidGen();
+  if(PLATS.some(p=>p.id===id)) id="perso-"+uidGen();
+  const ing=r.ing.filter(i=>Array.isArray(i)&&typeof i[2]==="string").map(i=>[typeof i[0]==="number"?i[0]:null, typeof i[1]==="string"?i[1]:"", i[2]]);
+  if(!ing.length) return null;
+  const o={id, perso:true, nom:r.nom.slice(0,200), min:typeof r.min==="number"?r.min:null,
+    themes:Array.isArray(r.themes)?r.themes.filter(t=>typeof t==="string").slice(0,8):[], ing,
+    et:Array.isArray(r.et)?r.et.filter(t=>typeof t==="string"):[]};
+  if(typeof r.lot==="number"&&r.lot>0){ o.lot=r.lot; if(typeof r.unite==="string") o.unite=r.unite; }
+  if(typeof r.cons==="string") o.cons=r.cons;
+  return o;
+}
+function fusionRecettes(list){
+  let n=0;
+  (list||[]).forEach(r=>{ const c=nettoyerRecette(r); if(!c) return; if(D.recettes.some(x=>x.id===c.id || x.nom===c.nom)) return; D.recettes.push(c); n++; });
+  if(n) persist("recettes"); return n;
+}
+function fusionSauvegarde(s){
+  const out={recettes:fusionRecettes(s.recettes), jours:0, semaines:0};
+  if(s.jours && typeof s.jours==="object") for(const [d,arr] of Object.entries(s.jours)){
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(d) || !Array.isArray(arr)) continue;
+    const loc=D.jours[d]||[], ids=new Set(loc.map(e=>e.id));
+    const add=arr.filter(e=>e && e.id && typeof e.h==="string" && TYPES_LIB[e.t] && !ids.has(e.id));
+    if(add.length){ D.jours[d]=loc.concat(add); persist("j-"+d); out.jours+=add.length; }
+  }
+  if(s.semaines && typeof s.semaines==="object"){ let ch=false;
+    for(const [k,arr] of Object.entries(s.semaines)) if(Array.isArray(arr) && arr.length && !(D.semaines[k]||[]).length){ D.semaines[k]=arr.filter(x=>x&&typeof x.id==="string").map(x=>({id:x.id,p:+x.p||1})); out.semaines++; ch=true; }
+    if(ch) persist("semaines"); }
+  if(s.reg){ let ch=false;
+    ["traitements","repasPerso"].forEach(f=>(s.reg[f]||[]).forEach(x=>{ if(x && x.id && !D.reg[f].some(y=>y.id===x.id)){ D.reg[f].push(x); ch=true; } }));
+    if(ch) persist("reglages"); }
+  if(Array.isArray(s.placard) && s.placard.length && !D.placard){ D.placard=s.placard.filter(x=>x&&x.id&&typeof x.nom==="string").map(x=>({id:x.id,cat:String(x.cat||"Autres"),nom:x.nom,unite:String(x.unite||"paquet"),hint:String(x.hint||""),qte:+x.qte||0,seuil:+x.seuil||0})); persist("placard"); }
+  if(s.jmeta && typeof s.jmeta==="object") for(const [k,v] of Object.entries(s.jmeta)) if(/^\d{4}-\d{2}-\d{2}$/.test(k) && v && (v.type==="fodmap"||v.type==="pauvre") && !D.jmeta[k]){ D.jmeta[k]={type:v.type}; persist("j-"+k); }
+  if(s.reintro && s.reintro.start && !D.reintro.start){ D.reintro={start:s.reintro.start, tests:s.reintro.tests||{}}; persist("reintro"); }
+  return out;
+}
+async function lireFichier(f){
+  if(!f) return;
+  let txt=""; try{ txt=await f.text(); }catch(e){ toast("Fichier illisible"); return; }
+  if(/\.json$/i.test(f.name) || /^\s*[\[{]/.test(txt)){
+    let j; try{ j=JSON.parse(txt); }catch(e){ toast("Ce fichier JSON est abîmé : import impossible"); return; }
+    if(j && j.type==="fodmap-sauvegarde"){ const o=fusionSauvegarde(j); tout(); toast(`Importé : ${o.recettes} recette(s), ${o.jours} ligne(s) de journal, ${o.semaines} semaine(s)`); return; }
+    const list = Array.isArray(j) ? j : (j && j.recettes);
+    if(Array.isArray(list)){ const n=fusionRecettes(list); tout(); toast(n?`${n} recette(s) importée(s)`:"Aucune nouvelle recette dans ce fichier"); return; }
+    toast("Ce fichier n’est ni une sauvegarde ni un fichier de recettes"); return;
+  }
+  const blocs=txt.split(/\n\s*-{3,}\s*\n/).map(b=>b.trim()).filter(Boolean);
+  if(blocs.length===1){ ouvrirImport(null); $("#ipaste").value=blocs[0]; $("#iparse").click(); return; }
+  let n=0;
+  blocs.forEach(b=>{ const r=lireTexte(b); if(!r.nom||!r.ing.length) return; const base=Math.max(1,+r.base||1);
+    const ing=r.ing.map(lireIngredient).filter(Boolean).map(([q,u,nm])=>[q==null?null:q/base,u,nm]);
+    if(fusionRecettes([{nom:r.nom, min:+r.min||null, themes:[], ing, et:r.et}])) n++; });
+  tout(); toast(n?`${n} recette(s) importée(s) : vérifiez-les dans « Mes recettes »`:"Aucune recette reconnue dans ce fichier");
+}
+function renderDonnees(){
+  const nbJ=Object.values(D.jours).reduce((a,x)=>a+x.length,0);
+  const verbe = "Exporter";
+  $("#donnees").innerHTML=`<p class="intro">Vos données : ${D.recettes.length} recette(s) importée(s), ${nbJ} ligne(s) de journal, ${Object.values(D.semaines).filter(x=>x.length).length} semaine(s) planifiée(s).</p>
+   <h2 class="cat">Exporter</h2><div class="opts">
+    <div class="optrow"><div class="opt" style="cursor:default"><span class="grow">Sauvegarde complète<small>Recettes, semaines, journal, traitements, réintroduction (fichier .json, à réimporter ici)</small></span></div><button class="btn main" data-exp="tout">${verbe}</button></div>
+    <div class="optrow"><div class="opt" style="cursor:default"><span class="grow">Journal pour tableur<small>Une ligne par repas, symptôme ou selle (fichier .csv, s’ouvre dans Excel)</small></span></div><button class="btn" data-exp="csv">${verbe}</button></div>
+    <div class="optrow"><div class="opt" style="cursor:default"><span class="grow">Mes recettes<small>Pour les partager ou les réimporter (fichier .json)</small></span></div><button class="btn" data-exp="rec">${verbe}</button></div>
+    <div class="optrow"><div class="opt" style="cursor:default"><span class="grow">Résumé pour le médecin<small>Analyse et 14 derniers jours (fichier .txt)</small></span></div><button class="btn" data-exp="resume">${verbe}</button></div>
+   </div>
+   <h2 class="cat">Importer</h2>
+   <p class="intro">Choisissez une sauvegarde ou un fichier de recettes (.json), ou une recette en texte (.txt). Plusieurs recettes dans un même .txt doivent être séparées par une ligne « --- ». Rien n’est effacé : seuls les éléments nouveaux sont ajoutés.</p>
+   <label class="btn main" style="display:inline-block">Choisir un fichier<input type="file" id="ifile" accept=".json,.txt,application/json,text/plain" hidden></label>`;
+}
+
+/* ---------- Placard bio ---------- */
+const PLACARD0 = [
+ ["Farines et féculents",[["Farine de riz","paquet"],["Farine de sarrasin","paquet"],["Fécule de maïs","paquet"],["Pâtes sans gluten","paquet"],["Quinoa","paquet"],["Millet","paquet"],["Sarrasin décortiqué","paquet"],["Polenta","paquet"],["Riz soufflé nature","paquet"],["Galettes de riz","paquet"],["Flocons d’avoine","paquet"],["Pain au levain","pain"]]],
+ ["Protéines et produits frais",[["Tofu ferme nature","bloc","Si aromatisé : sans ail ni oignon"],["Tempeh","bloc"],["Feta","barquette"],["Halloumi","paquet"],["Comté","morceau"],["Parmesan","morceau"]]],
+ ["Laits et crèmes végétales",[["Crème de riz cuisine","brique","Sans inuline"],["Crème de coco","brique"],["Boisson d’amande non sucrée","brique"],["Boisson de riz","brique"]]],
+ ["Sucré et goûters",[["Sirop d’érable","bouteille"],["Sirop de riz","pot"],["Chocolat noir","tablette"],["Cacao en poudre non sucré","boîte"],["Beurre de cacahuète 100 %","pot"],["Noix de pécan","sachet"],["Noix","sachet"],["Graines de courge","sachet"],["Graines de chia","sachet"],["Graines de lin","sachet"],["Graines de sésame","sachet"],["Noix de coco râpée","sachet"]]],
+ ["Condiments et épices",[["Tamari","bouteille"],["Cumin","pot"],["Curcuma","pot"],["Paprika","pot"],["Origan","pot"],["Cannelle","pot"]]]
+];
+const PCATS = PLACARD0.map(c=>c[0]);
+function placard(){
+  if(!D.placard){ D.placard=[]; PLACARD0.forEach(([cat,l])=>l.forEach(([nom,unite,hint],i)=>D.placard.push({id:"p"+D.placard.length, cat, nom, unite, hint:hint||"", qte:0, seuil:1}))); }
+  return D.placard;
+}
+const pluriel = (u,n) => n>1 ? (/eau$/.test(u)?u+"x":(/s$/.test(u)?u:u+"s")) : u;
+const aRacheter = () => placard().filter(x=>x.qte<=x.seuil);
+const achat = x => x.achat || Math.max(1, x.seuil+1-x.qte);
+const catsPlacard = () => PCATS.concat([...new Set(placard().map(x=>x.cat))].filter(c=>!PCATS.includes(c))).filter(c=>placard().some(x=>x.cat===c));
+function htmlPlacard(){
+  const P=placard(), R=aRacheter();
+  let h=`<h2 class="cat">Mon placard bio</h2>
+   <p class="intro">Indiquez ce que vous avez à la maison. Touchez « Utilisé » quand vous finissez ou entamez un produit : quand il en reste autant que le seuil (1 par défaut), il passe dans « À racheter ».</p>
+   <div class="note"><strong>À racheter (${R.length})</strong>${R.length?`<p style="margin:4px 0 8px">Pendant les courses, cochez ce que vous mettez dans le panier et indiquez combien à droite, puis validez : les produits cochés sont ajoutés au placard.</p><ul class="shop">${R.map(x=>`<li style="display:flex;align-items:center;gap:6px;padding-right:10px"><label style="flex:1;min-width:0"><input type="checkbox" data-pp="${x.id}" ${x.panier?"checked":""}><span>${esc(x.nom)}${x.hint?` <small class="rsub">(${esc(x.hint)})</small>`:""}</span></label><div class="mini" aria-label="Nombre acheté"><button data-pq="${x.id}|-1" aria-label="Un de moins">−</button><b>${achat(x)}</b><button data-pq="${x.id}|1" aria-label="Un de plus">+</button></div></li>`).join("")}</ul><div class="actions" style="margin-top:10px"><button class="btn main" id="pvalid" ${R.some(x=>x.panier)?"":"disabled"}>Valider mes courses (${R.filter(x=>x.panier).length})</button><button class="btn" id="pexp">Exporter la liste</button></div>`:" : rien pour l’instant."}</div>`;
+  const toutOuvert = catsPlacard().every(c=>ui.popen.has(c));
+  h+=`<div class="actions" style="margin:0 0 4px"><button class="btn" id="ptout">${toutOuvert?"Tout replier":"Tout déplier"}</button></div>`;
+  catsPlacard().forEach(cat=>{
+    const l=P.filter(x=>x.cat===cat); if(!l.length) return;
+    const nb=l.filter(x=>x.qte<=x.seuil).length;
+    h+=`<details class="rec" data-pcat="${esc(cat)}" ${ui.popen.has(cat)?"open":""}><summary><div class="rt"><h3>${esc(cat)}</h3><div class="meta">${l.length} produit${l.length>1?"s":""}${nb?`, ${nb} à racheter`:""}</div></div><span class="plus" aria-hidden="true">+</span></summary><div class="body">`+
+      l.map(x=>{ const bas=x.qte<=x.seuil;
+        return `<div class="planrow" style="margin:10px 0 0"><div class="top2"><span class="grow">${bas?'<span class="dot non" role="img" aria-label="À racheter"></span> ':""}${esc(x.nom)}${x.hint?`<small class="rsub" style="display:block;font-weight:400">${esc(x.hint)}</small>`:""}</span><b>${x.qte} ${esc(pluriel(x.unite,x.qte))}</b></div>
+        <div class="acts"><button class="btn" data-pu="${x.id}" ${x.qte<=0?"disabled":""}>Utilisé (−1)</button><button class="btn" data-pa="${x.id}">Acheté (+1)</button><button class="x" data-pedit="${x.id}">${ui.pedit===x.id?"Fermer":"Réglages"}</button></div>
+        ${ui.pedit===x.id?`<div class="acts"><div class="mini"><span>Racheter quand il en reste</span><button data-ps="${x.id}|-1" aria-label="Seuil moins un">−</button><b>${x.seuil}</b><button data-ps="${x.id}|1" aria-label="Seuil plus un">+</button></div><button class="x" data-pdel="${x.id}">Supprimer</button></div>`:""}</div>`; }).join("")+`</div></details>`;
+  });
+  h+=`<h3 style="margin:16px 0 8px">Ajouter un produit</h3><div class="row"><input type="text" id="pnom" placeholder="Produit (ex. Crème de sarrasin)" aria-label="Nom du produit" style="flex:2;min-width:160px"><input type="text" id="punit" placeholder="Unité (ex. paquet)" aria-label="Unité" style="flex:1;min-width:110px"></div>
+   <div class="row"><select id="pcat" aria-label="Catégorie">${PCATS.map(c=>`<option>${esc(c)}</option>`).join("")}</select><button class="btn main" id="padd">Ajouter</button></div>`;
+  return h;
+}
+function clicPlacard(b){
+  const ds=b.dataset, P=placard(), it=id=>P.find(x=>x.id===id);
+  if(ds.pq){ const [id,d]=ds.pq.split("|"); const x=it(id); x.achat=Math.max(1,Math.min(20,achat(x)+(+d))); x.panier=true; persist("placard"); renderSemaine(); return true; }
+  if(b.id==="pvalid"){ const l=P.filter(x=>x.panier); l.forEach(x=>{ x.qte+=achat(x); delete x.panier; delete x.achat; }); persist("placard"); renderSemaine(); toast(`${l.length} produit${l.length>1?"s":""} ajouté${l.length>1?"s":""} au placard`); return true; }
+  if(b.id==="ptout"){ const C=catsPlacard(); if(C.every(c=>ui.popen.has(c))) ui.popen.clear(); else C.forEach(c=>ui.popen.add(c)); renderSemaine(); return true; }
+  if(ds.pu){ const x=it(ds.pu); x.qte=Math.max(0,x.qte-1); persist("placard"); renderSemaine(); toast(x.qte<=x.seuil?`${x.nom} : à racheter`:`${x.nom} : il en reste ${x.qte}`); return true; }
+  if(ds.pa){ const x=it(ds.pa); x.qte++; persist("placard"); renderSemaine(); return true; }
+  if(ds.pedit){ ui.pedit = ui.pedit===ds.pedit ? null : ds.pedit; renderSemaine(); return true; }
+  if(ds.ps){ const [id,d]=ds.ps.split("|"); const x=it(id); x.seuil=Math.max(0,Math.min(20,x.seuil+(+d))); persist("placard"); renderSemaine(); return true; }
+  if(ds.pdel){ if(ds.sure!=="1"){ ds.sure="1"; b.textContent="Confirmer la suppression"; return true; } D.placard=P.filter(x=>x.id!==ds.pdel); ui.pedit=null; persist("placard"); renderSemaine(); toast("Produit supprimé"); return true; }
+  if(b.id==="padd"){ const nom=$("#pnom").value.trim(); if(!nom){ toast("Indiquez le nom du produit"); return true; }
+    const cat=$("#pcat").value; P.push({id:"p"+uidGen(), cat, nom, unite:$("#punit").value.trim()||"paquet", hint:"", qte:0, seuil:1}); ui.popen.add(cat); persist("placard"); renderSemaine(); toast("Produit ajouté"); return true; }
+  if(b.id==="pexp"){ const R=aRacheter(); const txt="À racheter en magasin bio\n"+PCATS.concat(["Autres"]).map(c=>{ const l=R.filter(x=>x.cat===c||(c==="Autres"&&!PCATS.includes(x.cat))); return l.length?"\n"+c+" :\n"+l.map(x=>"- "+x.nom+(x.hint?" ("+x.hint.toLowerCase()+")":"")).join("\n"):""; }).join("");
+    telecharger(`a-racheter-bio-${aujourdhui()}.txt`, txt, "Liste exportée"); return true; }
+  return false;
+}
+
+/* ---------- Évènements ---------- */
+function tout(){ renderCats(); renderPlats(); renderFF(); renderFoods(); renderSemaine(); renderQuick(); renderJournal(); renderAnalyse(); renderReintro(); renderDonnees(); }
+function allerOnglet(tab){
+  document.querySelectorAll("nav button").forEach(x=>x.setAttribute("aria-selected",x.dataset.tab===tab));
+  document.querySelectorAll(".panel").forEach(p=>p.hidden=p.id!=="p-"+tab);
+  if(tab==="analyse") renderAnalyse();
+  if(tab==="plats") renderPlats();
+  if(tab==="semaine") renderSemaine();
+  if(tab==="reintro") renderReintro();
+  if(tab==="donnees") renderDonnees();
+  window.scrollTo({top:0});
+}
+document.querySelector("nav").addEventListener("click",e=>{ const b=e.target.closest("button[data-tab]"); if(b) allerOnglet(b.dataset.tab); });
+$("#cats").addEventListener("click",e=>{ const b=e.target.closest("[data-cat]"); if(!b) return; ui.theme=b.dataset.cat; renderCats(); renderPlats(); });
+$("#q").addEventListener("input",e=>{ ui.q=e.target.value; renderPlats(); });
+$("#moins").addEventListener("click",()=>{ if(D.reg.pers>1){ D.reg.pers--; persist("reglages"); renderPlats(); } });
+$("#plus").addEventListener("click",()=>{ if(D.reg.pers<12){ D.reg.pers++; persist("reglages"); renderPlats(); } });
+$("#btnImport").addEventListener("click",()=>ouvrirImport(null));
+$("#liste").addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]"); if(!b) return;
+  const id=b.dataset.id, p=platDe(id), act=b.dataset.act;
+  if(act==="copy") return copier(texteJow(p, D.reg.pers),"Recette copiée");
+  if(act==="edit") return ouvrirImport(id);
+  if(act==="delr"){
+    if(b.dataset.sure!=="1"){ b.dataset.sure="1"; b.textContent="Confirmer la suppression"; return; }
+    D.recettes=D.recettes.filter(r=>r.id!==id); persist("recettes"); renderCats(); renderPlats(); renderSemaine(); toast("Recette supprimée"); return;
+  }
+  if(basculer(id)){ renderPlats(); renderSemaine(); const again=[...document.querySelectorAll("details.rec")].find(d=>d.querySelector(`[data-id="${id}"]`)); if(again) again.open=true; }
+});
+$("#fq").addEventListener("input",e=>{ ui.fq=e.target.value; renderFoods(); });
+$("#ff").addEventListener("click",e=>{ const b=e.target.closest("[data-ff]"); if(!b) return; ui.ff=b.dataset.ff; renderFF(); renderFoods(); });
+$("#semaine").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return; const ds=b.dataset;
+  if(ds.wk!==undefined){ ui.week = ds.wk==="0" ? lundiDe(aujourdhui()) : decalerSemaine(ui.week,+ds.wk); renderSemaine(); return; }
+  if(ds.go) return allerOnglet(ds.go);
+  if(ds.pm){ const wk=semaine(ui.week).map(x=>({...x})); const s=wk.find(x=>x.id===ds.pm); s.p=Math.min(12,Math.max(1,s.p+(+ds.d))); D.semaines[ui.week]=wk; persist("semaines"); renderSemaine(); return; }
+  if(ds.cpj){ const s=semaine(ui.week).find(x=>x.id===ds.cpj); return copier(texteJow(platDe(ds.cpj), s.p),"Recette copiée"); }
+  if(ds.rm){ D.semaines[ui.week]=semaine(ui.week).filter(x=>x.id!==ds.rm); persist("semaines"); renderSemaine(); return; }
+  if(ds.addidee){ if(basculer(ds.addidee)) renderSemaine(); return; }
+  if(clicPlacard(b)) return;
+  if(b.id==="cpListe") copier("Liste de courses, "+libSemaine(ui.week).toLowerCase()+"\n"+agreger(ui.week).map(i=>"- "+i.t).join("\n"),"Liste copiée");
+});
+$("#semaine").addEventListener("toggle",e=>{ const d=e.target; if(d.dataset && d.dataset.pcat){ if(d.open) ui.popen.add(d.dataset.pcat); else ui.popen.delete(d.dataset.pcat); } },true);
+$("#semaine").addEventListener("change",e=>{ if(e.target.dataset.pp){ const x=placard().find(y=>y.id===e.target.dataset.pp); if(!x) return; if(e.target.checked) x.panier=true; else delete x.panier; persist("placard"); const n=placard().filter(y=>y.panier&&y.qte<=y.seuil).length, v=$("#pvalid"); if(v){ v.textContent=`Valider mes courses (${n})`; v.disabled=!n; } return; } const k=e.target.dataset.k; if(!k) return; D.reg.coche[k]=e.target.checked; persist("reglages"); });
+
+/* Réintroduction */
+function clicReintro(e){
+  const b=e.target.closest("button"); if(!b) return; const ds=b.dataset;
+  if(ds.rnote){ const [k,i,d]=ds.rnote.split("|"); return noterDose(k,+i,d); }
+  if(b.id==="rgo"){ const v=$("#rstart").value; if(!v){ toast("Choisissez une date de début"); return; } D.reintro={start:v, tests:{}}; persist("reintro"); renderReintro(); renderJournal(); toast("Programme créé"); return; }
+  if(b.id==="rreset"){ if(b.dataset.sure!=="1"){ b.dataset.sure="1"; b.textContent="Confirmer : effacer le programme et ses résultats"; return; } D.reintro={start:null, tests:{}}; persist("reintro"); renderReintro(); renderJournal(); return; }
+  if(b.id==="rcopy") return copier(bilanTexte(),"Bilan copié");
+  let ch=false;
+  if(ds.rfood){ const [k,i]=ds.rfood.split("|"); testDe(k).food=+i; ch=true; }
+  if(ds.rmeal){ const [k,i]=ds.rmeal.split("|"); testDe(k).meal=+i; ch=true; }
+  if(ds.rstop){ const [k,n]=ds.rstop.split("|"); testDe(k).stop=+n||null; ch=true; if(+n) toast("Test arrêté : la suite du programme est décalée"); }
+  if(ds.rres){ const [k,v]=ds.rres.split("|"); const t=testDe(k); t.res = t.res===v ? null : v; ch=true; }
+  if(ds.rskip){ const t=testDe(ds.rskip); t.skip=!t.skip; ch=true; }
+  if(ds.rweek){ const P=planning(), p=P.tests.find(x=>x.k===ds.rweek), t=testDe(ds.rweek); return ajouterSemaine(lundiDe(p.jours[0]), FAMILLES[ds.rweek].repas[t.meal][0]); }
+  if(ch){ const open=[...document.querySelectorAll("#reintro details[open] h3")].map(x=>x.textContent); persist("reintro"); renderReintro(); renderJournal();
+    document.querySelectorAll("#reintro details").forEach(d=>{ if(open.includes(d.querySelector("h3").textContent)) d.open=true; }); }
+}
+$("#reintro").addEventListener("click",clicReintro);
+$("#jbanner").addEventListener("click",clicReintro);
+
+/* Données */
+$("#donnees").addEventListener("click",e=>{
+  const b=e.target.closest("[data-exp]"); if(!b) return; const d=aujourdhui();
+  if(b.dataset.exp==="tout") telecharger(`fodmap-sauvegarde-${d}.json`, sauvegarde(), "Sauvegarde enregistrée");
+  if(b.dataset.exp==="csv") telecharger(`journal-fodmap-${d}.csv`, csvJournal(), "Journal exporté");
+  if(b.dataset.exp==="rec"){ if(!D.recettes.length){ toast("Aucune recette importée à exporter"); return; } telecharger(`mes-recettes-fodmap-${d}.json`, fichierRecettes(), "Recettes exportées"); }
+  if(b.dataset.exp==="resume") telecharger(`resume-fodmap-${d}.txt`, resume(), "Résumé exporté");
+});
+document.addEventListener("change",e=>{ if(e.target.id==="ifile" || e.target.classList.contains("pfile")){ lireFichier(e.target.files[0]); e.target.value=""; } });
+
+/* Import */
+$("#icancel").addEventListener("click",()=>$("#idlg").close());
+$("#isave").addEventListener("click",enregistrerImport);
+$("#ibody").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  if(b.dataset.ith){ const t=b.dataset.ith; imp.themes = imp.themes.includes(t) ? imp.themes.filter(x=>x!==t) : [...imp.themes,t]; renderIThemes(); }
+  if(b.id==="iparse"){
+    const r=lireTexte($("#ipaste").value);
+    if(!r.ing.length && !r.nom){ toast("Rien à lire : collez d’abord une recette"); return; }
+    if(r.nom) $("#inom").value=r.nom; if(r.min) $("#imin").value=r.min; if(r.base) $("#ibase").value=r.base;
+    $("#iing").value=r.ing.join("\n"); $("#iet").value=r.et.join("\n"); renderICheck();
+    toast("Recette lue : vérifiez les champs");
+  }
+});
+$("#ibody").addEventListener("input",e=>{ if(e.target.id==="iing") renderICheck(); });
+
+/* Journal */
+function changerJour(d){ ui.day=d; renderJournal(); }
+$("#jprev").addEventListener("click",()=>{ const t=new Date(ui.day+"T12:00"); t.setDate(t.getDate()-1); changerJour(cleJour(t)); });
+$("#jnext").addEventListener("click",()=>{ const t=new Date(ui.day+"T12:00"); t.setDate(t.getDate()+1); changerJour(cleJour(t)); });
+$("#jtoday").addEventListener("click",()=>changerJour(aujourdhui()));
+$("#jdate").addEventListener("change",e=>{ if(e.target.value) changerJour(e.target.value); });
+$("#nuit").addEventListener("click",()=>{ ui.nuit=!ui.nuit; renderJournal(); });
+$("#quick").addEventListener("click",e=>{ const b=e.target.closest("[data-quick]"); if(b) ouvrir(b.dataset.quick); });
+$("#jtype").addEventListener("click",e=>{ const b=e.target.closest("[data-jt]"); if(!b) return; const v=b.dataset.jt;
+  if((D.jmeta[ui.day]||{}).type===v) delete D.jmeta[ui.day]; else D.jmeta[ui.day]={type:v};
+  persist("j-"+ui.day); renderJournal(); });
+$("#timeline").addEventListener("click",e=>{
+  const a=e.target.closest("[data-hadd]"); if(a) return ouvrir("repas", +a.dataset.hadd);
+  const d=e.target.closest("[data-edel]");
+  if(d){ D.jours[ui.day]=(D.jours[ui.day]||[]).filter(x=>x.id!==d.dataset.edel); persist("j-"+ui.day); renderJournal(); toast("Ligne supprimée"); }
+});
+
+/* Fenêtre */
+$("#dcancel").addEventListener("click",()=>$("#dlg").close());
+$("#dsave").addEventListener("click",enregistrerEntree);
+$("#dbody").addEventListener("input",e=>{
+  const id=e.target.id;
+  if(id==="dh") dl.h=e.target.value;
+  else if(id==="dnote") dl.note=e.target.value;
+  else if(id==="dq"){ dl.q=e.target.value; $("#dres").innerHTML=resultatsAliments(); }
+  else if(id==="dsname") dl.saveName=e.target.value;
+  else if(id==="dtn") dl.trNom=e.target.value;
+  else if(id==="dtd") dl.trDose=e.target.value;
+});
+$("#dbody").addEventListener("change",e=>{ if(e.target.id==="dsave1") dl.save=e.target.checked; });
+$("#dbody").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  const ds=b.dataset; dl.err="";
+  if(ds.type){ dl.type=ds.type; }
+  else if(ds.rep){ dl.rep=dl.rep===ds.rep?null:ds.rep; }
+  else if(ds.delp){ D.reg.repasPerso=D.reg.repasPerso.filter(m=>m.id!==ds.delp); if(dl.rep==="p:"+ds.delp) dl.rep=null; persist("reglages"); }
+  else if(ds.al!==undefined){ const a=ds.al; if(!a) return; dl.al = dl.al.includes(a) ? dl.al.filter(x=>x!==a) : [...dl.al,a]; dl.q=""; }
+  else if(ds.alrm!==undefined){ dl.al=dl.al.filter(x=>x!==ds.alrm); }
+  else if(ds.tr){ dl.tr=dl.tr===ds.tr?null:ds.tr; }
+  else if(ds.deltr){ D.reg.traitements=D.reg.traitements.filter(m=>m.id!==ds.deltr); if(dl.tr===ds.deltr) dl.tr=null; persist("reglages"); }
+  else if(ds.addtr){
+    const nom=dl.trNom.trim(); if(!nom){ dl.err="Indiquez le nom du traitement."; return renderDlg(); }
+    const m={id:uidGen(), nom, dose:dl.trDose.trim()}; D.reg.traitements.push(m); dl.tr=m.id; dl.trNom=""; dl.trDose=""; persist("reglages"); toast("Traitement enregistré");
+  }
+  else if(ds.sym){ dl.sym = dl.sym.includes(ds.sym) ? dl.sym.filter(x=>x!==ds.sym) : [...dl.sym, ds.sym]; }
+  else if(ds.sev){ dl.sev=+ds.sev; }
+  else if(ds.br){ dl.br=+ds.br; }
+  else if(ds.flag){ dl[ds.flag]=!dl[ds.flag]; }
+  else return;
+  renderDlg();
+  if(ds.al!==undefined && dl.type==="aliment"){ const q=$("#dq"); if(q) q.focus(); }
+});
+
+/* Analyse */
+$("#analyse").addEventListener("change",e=>{ if(e.target.id==="win"){ ui.win=+e.target.value; renderAnalyse(); } });
+$("#analyse").addEventListener("click",e=>{ if(e.target.id==="cpResume") copier(resume(),"Résumé copié"); });
+
+tout();
+connecter();
+initDownloads();
+
+</script>
+</body>
+</html>
